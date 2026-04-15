@@ -1,1 +1,18 @@
+/* SISTEMA DE CONTROL DE CALIDAD ARTESANAL
+   Script inicial para la creación del esquema de base de datos.
+   Motor: SQL Server
+*/
 
+-- Crear base de datos (Comentado para ejecución manual posterior)
+-- CREATE DATABASE CalidadArtesanalDB;
+-- GO
+
+-- USE CalidadArtesanalDB;
+-- GO
+
+/* ESTRUCTURA PREVISTA:
+   1. Tabla Usuarios: Gestión de roles (Administrador / Operario).
+   2. Tabla Lotes: Registro de la producción artesanal.
+   3. Tabla Estandares: Definición de parámetros (Temperatura, Peso, etc.).
+   4. Tabla Inspecciones: Resultados de los controles de calidad.
+*/
