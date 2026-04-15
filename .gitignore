@@ -1,0 +1,18 @@
+# Dependencias
+node_modules/
+/vendor
+
+# Entornos virtuales
+env/
+venv/
+
+# Archivos de entorno (NUNCA SUBIR CLAVES)
+.env
+.env.local
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de logs
+*.log
