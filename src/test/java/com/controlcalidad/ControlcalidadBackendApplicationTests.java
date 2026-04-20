@@ -1,10 +1,10 @@
-package com.xplorelatam;
+package com.controlcalidad;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CalidadArtesanalApplicationTests {
+class ControlcalidadBackendApplicationTests {
 
 	@Test
 	void contextLoads() {

@@ -1,13 +1,13 @@
-package com.xplorelatam;
+package com.controlcalidad;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CalidadArtesanalApplication {
+public class ControlcalidadBackendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CalidadArtesanalApplication.class, args);
+		SpringApplication.run(ControlcalidadBackendApplication.class, args);
 	}
 
 }
