@@ -1,33 +1,21 @@
 package com.controlcalidad.dto;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
 public class EstandarCalidadDto {
-
 	@NotNull(message = "El id del producto es obligatorio")
 	private Integer idProducto;
-
-	@NotBlank(message = "El nombre del parametro es obligatorio")
-	@Size(max = 100, message = "El nombre del parametro no puede superar los 100 caracteres")
+	@NotBlank(message = "El nombre del parametro es obligatorio") @Size(max = 100)
 	private String nombreParametro;
-
-	@NotBlank(message = "La unidad de medida es obligatoria")
-	@Size(max = 30, message = "La unidad de medida no puede superar los 30 caracteres")
+	@NotBlank(message = "La unidad de medida es obligatoria") @Size(max = 30)
 	private String unidadMedida;
-
 	@NotNull(message = "El valor minimo es obligatorio")
 	private Double valorMinimo;
-
 	@NotNull(message = "El valor maximo es obligatorio")
 	private Double valorMaximo;
-
-	@Size(max = 255, message = "La descripcion no puede superar los 255 caracteres")
+	@Size(max = 255)
 	private String descripcion;
-
 	private boolean estado;
-
 	public Integer getIdProducto() { return idProducto; }
 	public void setIdProducto(Integer v) { this.idProducto = v; }
 	public String getNombreParametro() { return nombreParametro; }
