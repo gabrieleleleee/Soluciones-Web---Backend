@@ -1,6 +1,11 @@
 package com.controlcalidad.controller;
 
 import java.util.List;
+
+import org.springframework.hateoas.EntityModel;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,8 +14,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.controlcalidad.dto.UnidadMedidaDto;
 import com.controlcalidad.model.UnidadMedida;
 import com.controlcalidad.service.IUnidadMedidaService;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -19,28 +28,50 @@ import lombok.RequiredArgsConstructor;
 public class UnidadMedidaController {
 	private final IUnidadMedidaService service;
 
+	// GET ALL - Lista normal (compatible con frontend Angular)
 	@GetMapping
-	public List<UnidadMedida> findAll() throws Exception {
-		return service.findAll();
+	public ResponseEntity<List<UnidadMedida>> findAll() throws Exception {
+		return ResponseEntity.ok(service.findAll());
 	}
 
+	// GET BY ID - HATEOAS Nivel 3: incluye links de navegacion
 	@GetMapping("/{id}")
-	public UnidadMedida findById(@PathVariable("id") Integer id) throws Exception {
-		return service.findById(id);
+	public ResponseEntity<EntityModel<UnidadMedida>> findById(@PathVariable("id") Integer id) throws Exception {
+		UnidadMedida unidad = service.findById(id);
+		// Nivel 3 Richardson: self link + coleccion link
+		EntityModel<UnidadMedida> model = EntityModel.of(unidad,
+			linkTo(methodOn(UnidadMedidaController.class).findById(id)).withSelfRel(),
+			linkTo(methodOn(UnidadMedidaController.class).findAll()).withRel("unidades-medida"));
+		return ResponseEntity.ok(model);
 	}
 
+	// POST - DTO con validacion (@Valid)
 	@PostMapping
-	public UnidadMedida save(@RequestBody UnidadMedida unidad) throws Exception {
-		return service.save(unidad);
+	public ResponseEntity<UnidadMedida> save(@Valid @RequestBody UnidadMedidaDto dto) throws Exception {
+		UnidadMedida unidad = new UnidadMedida();
+		unidad.setNombreUnidad(dto.getNombreUnidad());
+		unidad.setAbreviatura(dto.getAbreviatura());
+		unidad.setEstado(dto.isEstado());
+
+		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(unidad));
 	}
 
+	// PUT - DTO con validacion (@Valid)
 	@PutMapping("/{id}")
-	public UnidadMedida update(@RequestBody UnidadMedida unidad, @PathVariable("id") Integer id) throws Exception {
-		return service.update(unidad, id);
+	public ResponseEntity<UnidadMedida> update(@Valid @RequestBody UnidadMedidaDto dto,
+			@PathVariable("id") Integer id) throws Exception {
+		UnidadMedida unidad = new UnidadMedida();
+		unidad.setNombreUnidad(dto.getNombreUnidad());
+		unidad.setAbreviatura(dto.getAbreviatura());
+		unidad.setEstado(dto.isEstado());
+
+		return ResponseEntity.ok(service.update(unidad, id));
 	}
 
+	// DELETE - 204 No Content
 	@DeleteMapping("/{id}")
-	public void delete(@PathVariable("id") Integer id) throws Exception {
+	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		service.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 }
