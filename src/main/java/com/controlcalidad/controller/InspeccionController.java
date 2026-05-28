@@ -19,6 +19,8 @@ import com.controlcalidad.dto.InspeccionDto;
 import com.controlcalidad.model.Inspeccion;
 import com.controlcalidad.model.Lote;
 import com.controlcalidad.model.MateriaPrima;
+import com.controlcalidad.repository.ILoteRepository;
+import com.controlcalidad.repository.IMateriaPrimaRepository;
 import com.controlcalidad.service.IInspeccionService;
 
 import jakarta.validation.Valid;
@@ -29,25 +31,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class InspeccionController {
 	private final IInspeccionService service;
+	private final ILoteRepository iLoteRepo;
+	private final IMateriaPrimaRepository iMateriaPrimaRepo;
 
-	// GET ALL - Lista normal (compatible con frontend Angular)
 	@GetMapping
 	public ResponseEntity<List<Inspeccion>> findAll() throws Exception {
 		return ResponseEntity.ok(service.findAll());
 	}
 
-	// GET BY ID - HATEOAS Nivel 3: incluye links de navegacion
 	@GetMapping("/{id}")
 	public ResponseEntity<EntityModel<Inspeccion>> findById(@PathVariable("id") Integer id) throws Exception {
 		Inspeccion inspeccion = service.findById(id);
-		// Nivel 3 Richardson: self link + coleccion link
 		EntityModel<Inspeccion> model = EntityModel.of(inspeccion,
 			linkTo(methodOn(InspeccionController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(InspeccionController.class).findAll()).withRel("inspecciones"));
 		return ResponseEntity.ok(model);
 	}
 
-	// POST - DTO con validacion (@Valid)
 	@PostMapping
 	public ResponseEntity<Inspeccion> save(@Valid @RequestBody InspeccionDto dto) throws Exception {
 		Inspeccion inspeccion = new Inspeccion();
@@ -55,20 +55,12 @@ public class InspeccionController {
 		inspeccion.setResultadoAprobado(dto.isResultadoAprobado());
 		inspeccion.setEstado(dto.isEstado());
 
-		Lote lote = new Lote();
-		lote.setIdLote(dto.getIdLote());
-		lote.setEstado(true);
-		inspeccion.setLote(lote);
-
-		MateriaPrima materiaprima = new MateriaPrima();
-		materiaprima.setIdMateriaPrima(dto.getIdMateriaPrima());
-		materiaprima.setEstado(true);
-		inspeccion.setMateriaPrima(materiaprima);
+		inspeccion.setLote(iLoteRepo.getReferenceById(dto.getIdLote()));
+		inspeccion.setMateriaPrima(iMateriaPrimaRepo.getReferenceById(dto.getIdMateriaPrima()));
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(inspeccion));
 	}
 
-	// PUT - DTO con validacion (@Valid)
 	@PutMapping("/{id}")
 	public ResponseEntity<Inspeccion> update(@Valid @RequestBody InspeccionDto dto,
 			@PathVariable("id") Integer id) throws Exception {
@@ -77,20 +69,12 @@ public class InspeccionController {
 		inspeccion.setResultadoAprobado(dto.isResultadoAprobado());
 		inspeccion.setEstado(dto.isEstado());
 
-		Lote lote = new Lote();
-		lote.setIdLote(dto.getIdLote());
-		lote.setEstado(true);
-		inspeccion.setLote(lote);
-
-		MateriaPrima materiaprima = new MateriaPrima();
-		materiaprima.setIdMateriaPrima(dto.getIdMateriaPrima());
-		materiaprima.setEstado(true);
-		inspeccion.setMateriaPrima(materiaprima);
+		inspeccion.setLote(iLoteRepo.getReferenceById(dto.getIdLote()));
+		inspeccion.setMateriaPrima(iMateriaPrimaRepo.getReferenceById(dto.getIdMateriaPrima()));
 
 		return ResponseEntity.ok(service.update(inspeccion, id));
 	}
 
-	// DELETE - 204 No Content
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		service.delete(id);

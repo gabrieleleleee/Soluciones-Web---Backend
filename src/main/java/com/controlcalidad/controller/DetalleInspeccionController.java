@@ -19,6 +19,8 @@ import com.controlcalidad.dto.DetalleInspeccionDto;
 import com.controlcalidad.model.DetalleInspeccion;
 import com.controlcalidad.model.Inspeccion;
 import com.controlcalidad.model.EstandarCalidad;
+import com.controlcalidad.repository.IInspeccionRepository;
+import com.controlcalidad.repository.IEstandarCalidadRepository;
 import com.controlcalidad.service.IDetalleInspeccionService;
 
 import jakarta.validation.Valid;
@@ -29,45 +31,35 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DetalleInspeccionController {
 	private final IDetalleInspeccionService service;
+	private final IInspeccionRepository iInspeccionRepo;
+	private final IEstandarCalidadRepository iEstandarRepo;
 
-	// GET ALL - Lista normal (compatible con frontend Angular)
 	@GetMapping
 	public ResponseEntity<List<DetalleInspeccion>> findAll() throws Exception {
 		return ResponseEntity.ok(service.findAll());
 	}
 
-	// GET BY ID - HATEOAS Nivel 3: incluye links de navegacion
 	@GetMapping("/{id}")
 	public ResponseEntity<EntityModel<DetalleInspeccion>> findById(@PathVariable("id") Integer id) throws Exception {
 		DetalleInspeccion detalle = service.findById(id);
-		// Nivel 3 Richardson: self link + coleccion link
 		EntityModel<DetalleInspeccion> model = EntityModel.of(detalle,
 			linkTo(methodOn(DetalleInspeccionController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(DetalleInspeccionController.class).findAll()).withRel("detalles-inspeccion"));
 		return ResponseEntity.ok(model);
 	}
 
-	// POST - DTO con validacion (@Valid)
 	@PostMapping
 	public ResponseEntity<DetalleInspeccion> save(@Valid @RequestBody DetalleInspeccionDto dto) throws Exception {
 		DetalleInspeccion detalle = new DetalleInspeccion();
 		detalle.setValorMedido(dto.getValorMedido());
 		detalle.setCumpleEstandar(dto.isCumpleEstandar());
 
-		Inspeccion inspeccion = new Inspeccion();
-		inspeccion.setIdInspeccion(dto.getIdInspeccion());
-		inspeccion.setEstado(true);
-		detalle.setInspeccion(inspeccion);
-
-		EstandarCalidad estandarcalidad = new EstandarCalidad();
-		estandarcalidad.setIdEstandar(dto.getIdEstandar());
-		estandarcalidad.setEstado(true);
-		detalle.setEstandarCalidad(estandarcalidad);
+		detalle.setInspeccion(iInspeccionRepo.getReferenceById(dto.getIdInspeccion()));
+		detalle.setEstandarCalidad(iEstandarRepo.getReferenceById(dto.getIdEstandar()));
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(detalle));
 	}
 
-	// PUT - DTO con validacion (@Valid)
 	@PutMapping("/{id}")
 	public ResponseEntity<DetalleInspeccion> update(@Valid @RequestBody DetalleInspeccionDto dto,
 			@PathVariable("id") Integer id) throws Exception {
@@ -75,20 +67,12 @@ public class DetalleInspeccionController {
 		detalle.setValorMedido(dto.getValorMedido());
 		detalle.setCumpleEstandar(dto.isCumpleEstandar());
 
-		Inspeccion inspeccion = new Inspeccion();
-		inspeccion.setIdInspeccion(dto.getIdInspeccion());
-		inspeccion.setEstado(true);
-		detalle.setInspeccion(inspeccion);
-
-		EstandarCalidad estandarcalidad = new EstandarCalidad();
-		estandarcalidad.setIdEstandar(dto.getIdEstandar());
-		estandarcalidad.setEstado(true);
-		detalle.setEstandarCalidad(estandarcalidad);
+		detalle.setInspeccion(iInspeccionRepo.getReferenceById(dto.getIdInspeccion()));
+		detalle.setEstandarCalidad(iEstandarRepo.getReferenceById(dto.getIdEstandar()));
 
 		return ResponseEntity.ok(service.update(detalle, id));
 	}
 
-	// DELETE - 204 No Content
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		service.delete(id);

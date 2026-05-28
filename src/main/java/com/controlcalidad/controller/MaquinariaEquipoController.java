@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.controlcalidad.dto.MaquinariaEquipoDto;
 import com.controlcalidad.model.MaquinariaEquipo;
 import com.controlcalidad.model.Proveedor;
+import com.controlcalidad.repository.IProveedorRepository;
 import com.controlcalidad.service.IMaquinariaEquipoService;
 
 import jakarta.validation.Valid;
@@ -28,25 +29,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MaquinariaEquipoController {
 	private final IMaquinariaEquipoService service;
+	private final IProveedorRepository iProveedorRepo;
 
-	// GET ALL - Lista normal (compatible con frontend Angular)
 	@GetMapping
 	public ResponseEntity<List<MaquinariaEquipo>> findAll() throws Exception {
 		return ResponseEntity.ok(service.findAll());
 	}
 
-	// GET BY ID - HATEOAS Nivel 3: incluye links de navegacion
 	@GetMapping("/{id}")
 	public ResponseEntity<EntityModel<MaquinariaEquipo>> findById(@PathVariable("id") Integer id) throws Exception {
 		MaquinariaEquipo maquinaria = service.findById(id);
-		// Nivel 3 Richardson: self link + coleccion link
 		EntityModel<MaquinariaEquipo> model = EntityModel.of(maquinaria,
 			linkTo(methodOn(MaquinariaEquipoController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(MaquinariaEquipoController.class).findAll()).withRel("maquinarias"));
 		return ResponseEntity.ok(model);
 	}
 
-	// POST - DTO con validacion (@Valid)
 	@PostMapping
 	public ResponseEntity<MaquinariaEquipo> save(@Valid @RequestBody MaquinariaEquipoDto dto) throws Exception {
 		MaquinariaEquipo maquinaria = new MaquinariaEquipo();
@@ -54,15 +52,11 @@ public class MaquinariaEquipoController {
 		maquinaria.setDescripcion(dto.getDescripcion());
 		maquinaria.setEstado(dto.isEstado());
 
-		Proveedor proveedor = new Proveedor();
-		proveedor.setIdProveedor(dto.getIdProveedor());
-		proveedor.setEstado(true);
-		maquinaria.setProveedor(proveedor);
+		maquinaria.setProveedor(iProveedorRepo.getReferenceById(dto.getIdProveedor()));
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(maquinaria));
 	}
 
-	// PUT - DTO con validacion (@Valid)
 	@PutMapping("/{id}")
 	public ResponseEntity<MaquinariaEquipo> update(@Valid @RequestBody MaquinariaEquipoDto dto,
 			@PathVariable("id") Integer id) throws Exception {
@@ -71,15 +65,11 @@ public class MaquinariaEquipoController {
 		maquinaria.setDescripcion(dto.getDescripcion());
 		maquinaria.setEstado(dto.isEstado());
 
-		Proveedor proveedor = new Proveedor();
-		proveedor.setIdProveedor(dto.getIdProveedor());
-		proveedor.setEstado(true);
-		maquinaria.setProveedor(proveedor);
+		maquinaria.setProveedor(iProveedorRepo.getReferenceById(dto.getIdProveedor()));
 
 		return ResponseEntity.ok(service.update(maquinaria, id));
 	}
 
-	// DELETE - 204 No Content
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		service.delete(id);

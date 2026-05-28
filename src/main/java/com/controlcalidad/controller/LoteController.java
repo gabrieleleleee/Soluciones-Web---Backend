@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.controlcalidad.dto.LoteDto;
 import com.controlcalidad.model.Lote;
 import com.controlcalidad.model.Producto;
+import com.controlcalidad.repository.IProductoRepository;
 import com.controlcalidad.service.ILoteService;
 
 import jakarta.validation.Valid;
@@ -28,25 +29,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LoteController {
 	private final ILoteService service;
+	private final IProductoRepository iProductoRepo;
 
-	// GET ALL - Lista normal (compatible con frontend Angular)
 	@GetMapping
 	public ResponseEntity<List<Lote>> findAll() throws Exception {
 		return ResponseEntity.ok(service.findAll());
 	}
 
-	// GET BY ID - HATEOAS Nivel 3: incluye links de navegacion
 	@GetMapping("/{id}")
 	public ResponseEntity<EntityModel<Lote>> findById(@PathVariable("id") Integer id) throws Exception {
 		Lote lote = service.findById(id);
-		// Nivel 3 Richardson: self link + coleccion link
 		EntityModel<Lote> model = EntityModel.of(lote,
 			linkTo(methodOn(LoteController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(LoteController.class).findAll()).withRel("lotes"));
 		return ResponseEntity.ok(model);
 	}
 
-	// POST - DTO con validacion (@Valid)
 	@PostMapping
 	public ResponseEntity<Lote> save(@Valid @RequestBody LoteDto dto) throws Exception {
 		Lote lote = new Lote();
@@ -57,15 +55,11 @@ public class LoteController {
 		lote.setObservaciones(dto.getObservaciones());
 		lote.setEstado(dto.isEstado());
 
-		Producto producto = new Producto();
-		producto.setIdProducto(dto.getIdProducto());
-		producto.setEstado(true);
-		lote.setProducto(producto);
+		lote.setProducto(iProductoRepo.getReferenceById(dto.getIdProducto()));
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(lote));
 	}
 
-	// PUT - DTO con validacion (@Valid)
 	@PutMapping("/{id}")
 	public ResponseEntity<Lote> update(@Valid @RequestBody LoteDto dto,
 			@PathVariable("id") Integer id) throws Exception {
@@ -77,15 +71,11 @@ public class LoteController {
 		lote.setObservaciones(dto.getObservaciones());
 		lote.setEstado(dto.isEstado());
 
-		Producto producto = new Producto();
-		producto.setIdProducto(dto.getIdProducto());
-		producto.setEstado(true);
-		lote.setProducto(producto);
+		lote.setProducto(iProductoRepo.getReferenceById(dto.getIdProducto()));
 
 		return ResponseEntity.ok(service.update(lote, id));
 	}
 
-	// DELETE - 204 No Content
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		service.delete(id);

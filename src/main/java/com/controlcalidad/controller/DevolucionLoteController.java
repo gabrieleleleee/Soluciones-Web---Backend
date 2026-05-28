@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.controlcalidad.dto.DevolucionLoteDto;
 import com.controlcalidad.model.DevolucionLote;
 import com.controlcalidad.model.Lote;
+import com.controlcalidad.repository.ILoteRepository;
 import com.controlcalidad.service.IDevolucionLoteService;
 
 import jakarta.validation.Valid;
@@ -28,58 +29,49 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DevolucionLoteController {
 	private final IDevolucionLoteService service;
+	private final ILoteRepository iLoteRepo;
 
-	// GET ALL - Lista normal (compatible con frontend Angular)
 	@GetMapping
 	public ResponseEntity<List<DevolucionLote>> findAll() throws Exception {
 		return ResponseEntity.ok(service.findAll());
 	}
 
-	// GET BY ID - HATEOAS Nivel 3: incluye links de navegacion
 	@GetMapping("/{id}")
 	public ResponseEntity<EntityModel<DevolucionLote>> findById(@PathVariable("id") Integer id) throws Exception {
 		DevolucionLote devolucion = service.findById(id);
-		// Nivel 3 Richardson: self link + coleccion link
 		EntityModel<DevolucionLote> model = EntityModel.of(devolucion,
 			linkTo(methodOn(DevolucionLoteController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(DevolucionLoteController.class).findAll()).withRel("devoluciones"));
 		return ResponseEntity.ok(model);
 	}
 
-	// POST - DTO con validacion (@Valid)
 	@PostMapping
 	public ResponseEntity<DevolucionLote> save(@Valid @RequestBody DevolucionLoteDto dto) throws Exception {
 		DevolucionLote devolucion = new DevolucionLote();
+		devolucion.setFechaDevolucion(dto.getFechaDevolucion());
 		devolucion.setMotivoDevolucion(dto.getMotivoDevolucion());
 		devolucion.setCantidadDevuelta(dto.getCantidadDevuelta());
 		devolucion.setEstado(dto.isEstado());
 
-		Lote lote = new Lote();
-		lote.setIdLote(dto.getIdLote());
-		lote.setEstado(true);
-		devolucion.setLote(lote);
+		devolucion.setLote(iLoteRepo.getReferenceById(dto.getIdLote()));
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(devolucion));
 	}
 
-	// PUT - DTO con validacion (@Valid)
 	@PutMapping("/{id}")
 	public ResponseEntity<DevolucionLote> update(@Valid @RequestBody DevolucionLoteDto dto,
 			@PathVariable("id") Integer id) throws Exception {
 		DevolucionLote devolucion = new DevolucionLote();
+		devolucion.setFechaDevolucion(dto.getFechaDevolucion());
 		devolucion.setMotivoDevolucion(dto.getMotivoDevolucion());
 		devolucion.setCantidadDevuelta(dto.getCantidadDevuelta());
 		devolucion.setEstado(dto.isEstado());
 
-		Lote lote = new Lote();
-		lote.setIdLote(dto.getIdLote());
-		lote.setEstado(true);
-		devolucion.setLote(lote);
+		devolucion.setLote(iLoteRepo.getReferenceById(dto.getIdLote()));
 
 		return ResponseEntity.ok(service.update(devolucion, id));
 	}
 
-	// DELETE - 204 No Content
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		service.delete(id);
