@@ -53,7 +53,6 @@ public class DetalleInspeccionController {
 		DetalleInspeccion detalle = new DetalleInspeccion();
 		detalle.setValorMedido(dto.getValorMedido());
 		detalle.setCumpleEstandar(dto.isCumpleEstandar());
-
 		detalle.setInspeccion(iInspeccionRepo.getReferenceById(dto.getIdInspeccion()));
 		detalle.setEstandarCalidad(iEstandarRepo.getReferenceById(dto.getIdEstandar()));
 
@@ -66,7 +65,6 @@ public class DetalleInspeccionController {
 		DetalleInspeccion detalle = new DetalleInspeccion();
 		detalle.setValorMedido(dto.getValorMedido());
 		detalle.setCumpleEstandar(dto.isCumpleEstandar());
-
 		detalle.setInspeccion(iInspeccionRepo.getReferenceById(dto.getIdInspeccion()));
 		detalle.setEstandarCalidad(iEstandarRepo.getReferenceById(dto.getIdEstandar()));
 

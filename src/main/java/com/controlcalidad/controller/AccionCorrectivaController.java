@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.controlcalidad.dto.AccionCorrectivaDto;
 import com.controlcalidad.model.AccionCorrectiva;
+import java.time.LocalDateTime;
 import com.controlcalidad.model.Inspeccion;
 import com.controlcalidad.repository.IInspeccionRepository;
 import com.controlcalidad.service.IAccionCorrectivaService;
@@ -49,9 +50,9 @@ public class AccionCorrectivaController {
 	public ResponseEntity<AccionCorrectiva> save(@Valid @RequestBody AccionCorrectivaDto dto) throws Exception {
 		AccionCorrectiva accion = new AccionCorrectiva();
 		accion.setAccionTomada(dto.getAccionTomada());
+		accion.setFechaRegistro(java.time.LocalDateTime.parse(dto.getFechaRegistro()));
 		accion.setObservacion(dto.getObservacion());
 		accion.setEstado(dto.isEstado());
-
 		accion.setInspeccion(iInspeccionRepo.getReferenceById(dto.getIdInspeccion()));
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(accion));
@@ -62,9 +63,9 @@ public class AccionCorrectivaController {
 			@PathVariable("id") Integer id) throws Exception {
 		AccionCorrectiva accion = new AccionCorrectiva();
 		accion.setAccionTomada(dto.getAccionTomada());
+		accion.setFechaRegistro(java.time.LocalDateTime.parse(dto.getFechaRegistro()));
 		accion.setObservacion(dto.getObservacion());
 		accion.setEstado(dto.isEstado());
-
 		accion.setInspeccion(iInspeccionRepo.getReferenceById(dto.getIdInspeccion()));
 
 		return ResponseEntity.ok(service.update(accion, id));

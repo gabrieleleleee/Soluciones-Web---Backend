@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.controlcalidad.dto.AlertaCalidadDto;
 import com.controlcalidad.model.AlertaCalidad;
+import java.time.LocalDate;
 import com.controlcalidad.service.IAlertaCalidadService;
 
 import jakarta.validation.Valid;
@@ -28,47 +29,43 @@ import lombok.RequiredArgsConstructor;
 public class AlertaCalidadController {
 	private final IAlertaCalidadService service;
 
-	// GET ALL - Lista normal (compatible con frontend Angular)
 	@GetMapping
 	public ResponseEntity<List<AlertaCalidad>> findAll() throws Exception {
 		return ResponseEntity.ok(service.findAll());
 	}
 
-	// GET BY ID - HATEOAS Nivel 3: incluye links de navegacion
 	@GetMapping("/{id}")
 	public ResponseEntity<EntityModel<AlertaCalidad>> findById(@PathVariable("id") Integer id) throws Exception {
 		AlertaCalidad alerta = service.findById(id);
-		// Nivel 3 Richardson: self link + coleccion link
 		EntityModel<AlertaCalidad> model = EntityModel.of(alerta,
 			linkTo(methodOn(AlertaCalidadController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(AlertaCalidadController.class).findAll()).withRel("alertas"));
 		return ResponseEntity.ok(model);
 	}
 
-	// POST - DTO con validacion (@Valid)
 	@PostMapping
 	public ResponseEntity<AlertaCalidad> save(@Valid @RequestBody AlertaCalidadDto dto) throws Exception {
 		AlertaCalidad alerta = new AlertaCalidad();
 		alerta.setTitulo(dto.getTitulo());
 		alerta.setMensaje(dto.getMensaje());
+		alerta.setFechaAlerta(java.time.LocalDate.parse(dto.getFechaAlerta()));
 		alerta.setEstado(dto.isEstado());
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(alerta));
 	}
 
-	// PUT - DTO con validacion (@Valid)
 	@PutMapping("/{id}")
 	public ResponseEntity<AlertaCalidad> update(@Valid @RequestBody AlertaCalidadDto dto,
 			@PathVariable("id") Integer id) throws Exception {
 		AlertaCalidad alerta = new AlertaCalidad();
 		alerta.setTitulo(dto.getTitulo());
 		alerta.setMensaje(dto.getMensaje());
+		alerta.setFechaAlerta(java.time.LocalDate.parse(dto.getFechaAlerta()));
 		alerta.setEstado(dto.isEstado());
 
 		return ResponseEntity.ok(service.update(alerta, id));
 	}
 
-	// DELETE - 204 No Content
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) throws Exception {
 		service.delete(id);

@@ -54,7 +54,6 @@ public class EstandarCalidadController {
 		estandar.setValorMaximo(dto.getValorMaximo());
 		estandar.setDescripcion(dto.getDescripcion());
 		estandar.setEstado(dto.isEstado());
-
 		estandar.setProducto(iProductoRepo.getReferenceById(dto.getIdProducto()));
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(estandar));
@@ -70,7 +69,6 @@ public class EstandarCalidadController {
 		estandar.setValorMaximo(dto.getValorMaximo());
 		estandar.setDescripcion(dto.getDescripcion());
 		estandar.setEstado(dto.isEstado());
-
 		estandar.setProducto(iProductoRepo.getReferenceById(dto.getIdProducto()));
 
 		return ResponseEntity.ok(service.update(estandar, id));

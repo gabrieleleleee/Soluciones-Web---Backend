@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.controlcalidad.dto.DevolucionLoteDto;
 import com.controlcalidad.model.DevolucionLote;
+import java.time.LocalDate;
 import com.controlcalidad.model.Lote;
 import com.controlcalidad.repository.ILoteRepository;
 import com.controlcalidad.service.IDevolucionLoteService;
@@ -48,11 +49,10 @@ public class DevolucionLoteController {
 	@PostMapping
 	public ResponseEntity<DevolucionLote> save(@Valid @RequestBody DevolucionLoteDto dto) throws Exception {
 		DevolucionLote devolucion = new DevolucionLote();
-		devolucion.setFechaDevolucion(dto.getFechaDevolucion());
+		devolucion.setFechaDevolucion(java.time.LocalDate.parse(dto.getFechaDevolucion()));
 		devolucion.setMotivoDevolucion(dto.getMotivoDevolucion());
 		devolucion.setCantidadDevuelta(dto.getCantidadDevuelta());
 		devolucion.setEstado(dto.isEstado());
-
 		devolucion.setLote(iLoteRepo.getReferenceById(dto.getIdLote()));
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(devolucion));
@@ -62,11 +62,10 @@ public class DevolucionLoteController {
 	public ResponseEntity<DevolucionLote> update(@Valid @RequestBody DevolucionLoteDto dto,
 			@PathVariable("id") Integer id) throws Exception {
 		DevolucionLote devolucion = new DevolucionLote();
-		devolucion.setFechaDevolucion(dto.getFechaDevolucion());
+		devolucion.setFechaDevolucion(java.time.LocalDate.parse(dto.getFechaDevolucion()));
 		devolucion.setMotivoDevolucion(dto.getMotivoDevolucion());
 		devolucion.setCantidadDevuelta(dto.getCantidadDevuelta());
 		devolucion.setEstado(dto.isEstado());
-
 		devolucion.setLote(iLoteRepo.getReferenceById(dto.getIdLote()));
 
 		return ResponseEntity.ok(service.update(devolucion, id));

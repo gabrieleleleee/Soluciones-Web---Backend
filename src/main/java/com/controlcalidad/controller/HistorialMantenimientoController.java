@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.controlcalidad.dto.HistorialMantenimientoDto;
 import com.controlcalidad.model.HistorialMantenimiento;
+import java.time.LocalDateTime;
 import com.controlcalidad.model.MaquinariaEquipo;
 import com.controlcalidad.repository.IMaquinariaEquipoRepository;
 import com.controlcalidad.service.IHistorialMantenimientoService;
@@ -48,13 +49,12 @@ public class HistorialMantenimientoController {
 	@PostMapping
 	public ResponseEntity<HistorialMantenimiento> save(@Valid @RequestBody HistorialMantenimientoDto dto) throws Exception {
 		HistorialMantenimiento historial = new HistorialMantenimiento();
-		historial.setFechaMantenimiento(dto.getFechaMantenimiento());
+		historial.setFechaMantenimiento(java.time.LocalDateTime.parse(dto.getFechaMantenimiento()));
 		historial.setTipoMantenimiento(dto.getTipoMantenimiento());
 		historial.setDescripcionActividad(dto.getDescripcionActividad());
 		historial.setTecnicoResponsable(dto.getTecnicoResponsable());
 		historial.setCosto(dto.getCosto());
 		historial.setEstado(dto.isEstado());
-
 		historial.setMaquinariaEquipo(iMaquinariaRepo.getReferenceById(dto.getIdEquipo()));
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(historial));
@@ -64,13 +64,12 @@ public class HistorialMantenimientoController {
 	public ResponseEntity<HistorialMantenimiento> update(@Valid @RequestBody HistorialMantenimientoDto dto,
 			@PathVariable("id") Integer id) throws Exception {
 		HistorialMantenimiento historial = new HistorialMantenimiento();
-		historial.setFechaMantenimiento(dto.getFechaMantenimiento());
+		historial.setFechaMantenimiento(java.time.LocalDateTime.parse(dto.getFechaMantenimiento()));
 		historial.setTipoMantenimiento(dto.getTipoMantenimiento());
 		historial.setDescripcionActividad(dto.getDescripcionActividad());
 		historial.setTecnicoResponsable(dto.getTecnicoResponsable());
 		historial.setCosto(dto.getCosto());
 		historial.setEstado(dto.isEstado());
-
 		historial.setMaquinariaEquipo(iMaquinariaRepo.getReferenceById(dto.getIdEquipo()));
 
 		return ResponseEntity.ok(service.update(historial, id));

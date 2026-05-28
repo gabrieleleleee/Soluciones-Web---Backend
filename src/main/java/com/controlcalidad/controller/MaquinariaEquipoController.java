@@ -51,7 +51,6 @@ public class MaquinariaEquipoController {
 		maquinaria.setNombreEquipo(dto.getNombreEquipo());
 		maquinaria.setDescripcion(dto.getDescripcion());
 		maquinaria.setEstado(dto.isEstado());
-
 		maquinaria.setProveedor(iProveedorRepo.getReferenceById(dto.getIdProveedor()));
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(maquinaria));
@@ -64,7 +63,6 @@ public class MaquinariaEquipoController {
 		maquinaria.setNombreEquipo(dto.getNombreEquipo());
 		maquinaria.setDescripcion(dto.getDescripcion());
 		maquinaria.setEstado(dto.isEstado());
-
 		maquinaria.setProveedor(iProveedorRepo.getReferenceById(dto.getIdProveedor()));
 
 		return ResponseEntity.ok(service.update(maquinaria, id));

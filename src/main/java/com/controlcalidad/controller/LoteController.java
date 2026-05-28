@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.controlcalidad.dto.LoteDto;
 import com.controlcalidad.model.Lote;
+import java.time.LocalDate;
 import com.controlcalidad.model.Producto;
 import com.controlcalidad.repository.IProductoRepository;
 import com.controlcalidad.service.ILoteService;
@@ -49,12 +50,11 @@ public class LoteController {
 	public ResponseEntity<Lote> save(@Valid @RequestBody LoteDto dto) throws Exception {
 		Lote lote = new Lote();
 		lote.setCodigoLote(dto.getCodigoLote());
-		lote.setFechaProduccion(dto.getFechaProduccion());
+		lote.setFechaProduccion(java.time.LocalDate.parse(dto.getFechaProduccion()));
 		lote.setCantidadProducida(dto.getCantidadProducida());
 		lote.setEstadoLote(dto.getEstadoLote());
 		lote.setObservaciones(dto.getObservaciones());
 		lote.setEstado(dto.isEstado());
-
 		lote.setProducto(iProductoRepo.getReferenceById(dto.getIdProducto()));
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(lote));
@@ -65,12 +65,11 @@ public class LoteController {
 			@PathVariable("id") Integer id) throws Exception {
 		Lote lote = new Lote();
 		lote.setCodigoLote(dto.getCodigoLote());
-		lote.setFechaProduccion(dto.getFechaProduccion());
+		lote.setFechaProduccion(java.time.LocalDate.parse(dto.getFechaProduccion()));
 		lote.setCantidadProducida(dto.getCantidadProducida());
 		lote.setEstadoLote(dto.getEstadoLote());
 		lote.setObservaciones(dto.getObservaciones());
 		lote.setEstado(dto.isEstado());
-
 		lote.setProducto(iProductoRepo.getReferenceById(dto.getIdProducto()));
 
 		return ResponseEntity.ok(service.update(lote, id));

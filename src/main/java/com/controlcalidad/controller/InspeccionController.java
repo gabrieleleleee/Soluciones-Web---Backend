@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.controlcalidad.dto.InspeccionDto;
 import com.controlcalidad.model.Inspeccion;
+import java.time.LocalDateTime;
 import com.controlcalidad.model.Lote;
 import com.controlcalidad.model.MateriaPrima;
 import com.controlcalidad.repository.ILoteRepository;
@@ -51,10 +52,10 @@ public class InspeccionController {
 	@PostMapping
 	public ResponseEntity<Inspeccion> save(@Valid @RequestBody InspeccionDto dto) throws Exception {
 		Inspeccion inspeccion = new Inspeccion();
+		inspeccion.setFechaHora(java.time.LocalDateTime.parse(dto.getFechaHora()));
 		inspeccion.setObservacionesGenerales(dto.getObservacionesGenerales());
 		inspeccion.setResultadoAprobado(dto.isResultadoAprobado());
 		inspeccion.setEstado(dto.isEstado());
-
 		inspeccion.setLote(iLoteRepo.getReferenceById(dto.getIdLote()));
 		inspeccion.setMateriaPrima(iMateriaPrimaRepo.getReferenceById(dto.getIdMateriaPrima()));
 
@@ -65,10 +66,10 @@ public class InspeccionController {
 	public ResponseEntity<Inspeccion> update(@Valid @RequestBody InspeccionDto dto,
 			@PathVariable("id") Integer id) throws Exception {
 		Inspeccion inspeccion = new Inspeccion();
+		inspeccion.setFechaHora(java.time.LocalDateTime.parse(dto.getFechaHora()));
 		inspeccion.setObservacionesGenerales(dto.getObservacionesGenerales());
 		inspeccion.setResultadoAprobado(dto.isResultadoAprobado());
 		inspeccion.setEstado(dto.isEstado());
-
 		inspeccion.setLote(iLoteRepo.getReferenceById(dto.getIdLote()));
 		inspeccion.setMateriaPrima(iMateriaPrimaRepo.getReferenceById(dto.getIdMateriaPrima()));
 
