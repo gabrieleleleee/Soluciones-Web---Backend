@@ -1,27 +1,16 @@
 package com.controlcalidad.controller;
 
 import java.util.List;
-
 import org.springframework.hateoas.EntityModel;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import com.controlcalidad.dto.AccionCorrectivaDto;
 import com.controlcalidad.model.AccionCorrectiva;
-import java.time.LocalDateTime;
 import com.controlcalidad.model.Inspeccion;
 import com.controlcalidad.repository.IInspeccionRepository;
 import com.controlcalidad.service.IAccionCorrectivaService;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -50,7 +39,7 @@ public class AccionCorrectivaController {
 	public ResponseEntity<AccionCorrectiva> save(@Valid @RequestBody AccionCorrectivaDto dto) throws Exception {
 		AccionCorrectiva accion = new AccionCorrectiva();
 		accion.setAccionTomada(dto.getAccionTomada());
-		accion.setFechaRegistro(java.time.LocalDateTime.parse(dto.getFechaRegistro()));
+		accion.setFechaRegistro(dto.getFechaRegistro());
 		accion.setObservacion(dto.getObservacion());
 		accion.setEstado(dto.isEstado());
 		accion.setInspeccion(iInspeccionRepo.getReferenceById(dto.getIdInspeccion()));
@@ -63,7 +52,7 @@ public class AccionCorrectivaController {
 			@PathVariable("id") Integer id) throws Exception {
 		AccionCorrectiva accion = new AccionCorrectiva();
 		accion.setAccionTomada(dto.getAccionTomada());
-		accion.setFechaRegistro(java.time.LocalDateTime.parse(dto.getFechaRegistro()));
+		accion.setFechaRegistro(dto.getFechaRegistro());
 		accion.setObservacion(dto.getObservacion());
 		accion.setEstado(dto.isEstado());
 		accion.setInspeccion(iInspeccionRepo.getReferenceById(dto.getIdInspeccion()));

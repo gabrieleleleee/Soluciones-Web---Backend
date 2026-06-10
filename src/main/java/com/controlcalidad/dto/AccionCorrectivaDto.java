@@ -1,12 +1,13 @@
 package com.controlcalidad.dto;
+import java.time.LocalDateTime;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 public class AccionCorrectivaDto {
 	@NotBlank(message = "La accion tomada es obligatoria") @Size(max = 255)
 	private String accionTomada;
-	@NotBlank(message = "La fecha de registro es obligatoria")
-	private String fechaRegistro;
+	@NotNull(message = "La fecha de registro es obligatoria")
+	private LocalDateTime fechaRegistro;
 	@Size(max = 255)
 	private String observacion;
 	private boolean estado;
@@ -14,8 +15,8 @@ public class AccionCorrectivaDto {
 	private Integer idInspeccion;
 	public String getAccionTomada() { return accionTomada; }
 	public void setAccionTomada(String v) { this.accionTomada = v; }
-	public String getFechaRegistro() { return fechaRegistro; }
-	public void setFechaRegistro(String v) { this.fechaRegistro = v; }
+	public LocalDateTime getFechaRegistro() { return fechaRegistro; }
+	public void setFechaRegistro(LocalDateTime v) { this.fechaRegistro = v; }
 	public String getObservacion() { return observacion; }
 	public void setObservacion(String v) { this.observacion = v; }
 	public boolean isEstado() { return estado; }

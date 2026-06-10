@@ -1,27 +1,16 @@
 package com.controlcalidad.controller;
 
 import java.util.List;
-
 import org.springframework.hateoas.EntityModel;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import com.controlcalidad.dto.DevolucionLoteDto;
 import com.controlcalidad.model.DevolucionLote;
-import java.time.LocalDate;
 import com.controlcalidad.model.Lote;
 import com.controlcalidad.repository.ILoteRepository;
 import com.controlcalidad.service.IDevolucionLoteService;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -49,7 +38,7 @@ public class DevolucionLoteController {
 	@PostMapping
 	public ResponseEntity<DevolucionLote> save(@Valid @RequestBody DevolucionLoteDto dto) throws Exception {
 		DevolucionLote devolucion = new DevolucionLote();
-		devolucion.setFechaDevolucion(java.time.LocalDate.parse(dto.getFechaDevolucion()));
+		devolucion.setFechaDevolucion(dto.getFechaDevolucion());
 		devolucion.setMotivoDevolucion(dto.getMotivoDevolucion());
 		devolucion.setCantidadDevuelta(dto.getCantidadDevuelta());
 		devolucion.setEstado(dto.isEstado());
@@ -62,7 +51,7 @@ public class DevolucionLoteController {
 	public ResponseEntity<DevolucionLote> update(@Valid @RequestBody DevolucionLoteDto dto,
 			@PathVariable("id") Integer id) throws Exception {
 		DevolucionLote devolucion = new DevolucionLote();
-		devolucion.setFechaDevolucion(java.time.LocalDate.parse(dto.getFechaDevolucion()));
+		devolucion.setFechaDevolucion(dto.getFechaDevolucion());
 		devolucion.setMotivoDevolucion(dto.getMotivoDevolucion());
 		devolucion.setCantidadDevuelta(dto.getCantidadDevuelta());
 		devolucion.setEstado(dto.isEstado());

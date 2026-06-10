@@ -1,12 +1,10 @@
 package com.controlcalidad.service;
 
-import java.util.List;
-import com.controlcalidad.model.MaquinariaEquipo;
-
-public interface IMaquinariaEquipoService {
-	MaquinariaEquipo save(MaquinariaEquipo maquinaria) throws Exception;
-	MaquinariaEquipo update(MaquinariaEquipo maquinaria, Integer id) throws Exception;
-	List<MaquinariaEquipo> findAll() throws Exception;
-	MaquinariaEquipo findById(Integer id) throws Exception;
-	void delete(Integer id) throws Exception;
+/**
+ * Interfaz específica para MaquinariaEquipo.
+ * Extiende IGenericService<MaquinariaEquipo, Integer> para heredar
+ * los 5 métodos CRUD sin necesidad de redefinirlos.
+ */
+public interface IMaquinariaEquipoService extends IGenericService<MaquinariaEquipo, Integer> {
+    // Aquí se pueden agregar métodos específicos de MaquinariaEquipo si se necesitan
 }

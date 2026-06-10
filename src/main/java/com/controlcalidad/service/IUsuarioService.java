@@ -1,13 +1,10 @@
 package com.controlcalidad.service;
 
-import java.util.List;
-
-import com.controlcalidad.model.Usuario;
-
-public interface IUsuarioService {
-	Usuario save(Usuario usuario) throws Exception;
-	Usuario update(Usuario usuario, Integer id) throws Exception;
-	List<Usuario> findAll() throws Exception;
-	Usuario findById(Integer id) throws Exception;
-	void delete(Integer id) throws Exception;
+/**
+ * Interfaz específica para Usuario.
+ * Extiende IGenericService<Usuario, Integer> para heredar
+ * los 5 métodos CRUD sin necesidad de redefinirlos.
+ */
+public interface IUsuarioService extends IGenericService<Usuario, Integer> {
+    // Aquí se pueden agregar métodos específicos de Usuario si se necesitan
 }

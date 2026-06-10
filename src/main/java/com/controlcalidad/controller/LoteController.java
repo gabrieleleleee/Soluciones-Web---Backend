@@ -1,27 +1,16 @@
 package com.controlcalidad.controller;
 
 import java.util.List;
-
 import org.springframework.hateoas.EntityModel;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import com.controlcalidad.dto.LoteDto;
 import com.controlcalidad.model.Lote;
-import java.time.LocalDate;
 import com.controlcalidad.model.Producto;
 import com.controlcalidad.repository.IProductoRepository;
 import com.controlcalidad.service.ILoteService;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -50,7 +39,7 @@ public class LoteController {
 	public ResponseEntity<Lote> save(@Valid @RequestBody LoteDto dto) throws Exception {
 		Lote lote = new Lote();
 		lote.setCodigoLote(dto.getCodigoLote());
-		lote.setFechaProduccion(java.time.LocalDate.parse(dto.getFechaProduccion()));
+		lote.setFechaProduccion(dto.getFechaProduccion());
 		lote.setCantidadProducida(dto.getCantidadProducida());
 		lote.setEstadoLote(dto.getEstadoLote());
 		lote.setObservaciones(dto.getObservaciones());
@@ -65,7 +54,7 @@ public class LoteController {
 			@PathVariable("id") Integer id) throws Exception {
 		Lote lote = new Lote();
 		lote.setCodigoLote(dto.getCodigoLote());
-		lote.setFechaProduccion(java.time.LocalDate.parse(dto.getFechaProduccion()));
+		lote.setFechaProduccion(dto.getFechaProduccion());
 		lote.setCantidadProducida(dto.getCantidadProducida());
 		lote.setEstadoLote(dto.getEstadoLote());
 		lote.setObservaciones(dto.getObservaciones());

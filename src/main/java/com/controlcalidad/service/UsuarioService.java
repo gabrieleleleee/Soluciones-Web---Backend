@@ -1,44 +1,33 @@
 package com.controlcalidad.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
-
 import com.controlcalidad.model.Usuario;
 import com.controlcalidad.repository.IUsuarioRepository;
 
-import lombok.RequiredArgsConstructor;
-
+/**
+ * Implementación del servicio para Usuario.
+ * Extiende GenericServiceImpl<Usuario, Integer, IUsuarioRepository>
+ * para heredar los 5 métodos CRUD genéricos.
+ *
+ * Solo necesita:
+ * 1. Inyectar su repository via constructor (RequiredArgsConstructor o manual)
+ * 2. Implementar setId() para indicar cómo asignar el ID en update()
+ */
 @Service
-@RequiredArgsConstructor
-public class UsuarioService implements IUsuarioService {
-	private final IUsuarioRepository repo;
-	
-	@Override
-	public Usuario save(Usuario usuario) throws Exception {
-		return repo.save(usuario);
-	}
+public class UsuarioService
+        extends GenericServiceImpl<Usuario, Integer, IUsuarioRepository>
+        implements IUsuarioService {
 
-	@Override
-	public Usuario update(Usuario usuario, Integer id) throws Exception {
-		// TODO Logica utilizando ID
-		usuario.setIdUsuario(id);
-		return repo.save(usuario);
-	}
+    public UsuarioService(IUsuarioRepository repository) {
+        super(repository);
+    }
 
-	@Override
-	public List<Usuario> findAll() throws Exception {
-		return repo.findAll();
-	}
-
-	@Override
-	public Usuario findById(Integer id) throws Exception {
-		return repo.findById(id).orElse(new Usuario());
-	}
-
-	@Override
-	public void delete(Integer id) throws Exception {
-		repo.deleteById(id);	
-	}
-
+    /**
+     * Indica a GenericServiceImpl cómo asignar el ID a la entidad Usuario
+     * durante la operación update().
+     */
+    @Override
+    protected void setId(Usuario entity, Integer id) {
+        entity.setIdUsuario(id);
+    }
 }

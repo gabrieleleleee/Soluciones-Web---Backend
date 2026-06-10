@@ -1,12 +1,10 @@
 package com.controlcalidad.service;
 
-import java.util.List;
-import com.controlcalidad.model.CapacitacionPersonal;
-
-public interface ICapacitacionPersonalService {
-	CapacitacionPersonal save(CapacitacionPersonal capacitacion) throws Exception;
-	CapacitacionPersonal update(CapacitacionPersonal capacitacion, Integer id) throws Exception;
-	List<CapacitacionPersonal> findAll() throws Exception;
-	CapacitacionPersonal findById(Integer id) throws Exception;
-	void delete(Integer id) throws Exception;
+/**
+ * Interfaz específica para CapacitacionPersonal.
+ * Extiende IGenericService<CapacitacionPersonal, Integer> para heredar
+ * los 5 métodos CRUD sin necesidad de redefinirlos.
+ */
+public interface ICapacitacionPersonalService extends IGenericService<CapacitacionPersonal, Integer> {
+    // Aquí se pueden agregar métodos específicos de CapacitacionPersonal si se necesitan
 }

@@ -1,39 +1,33 @@
 package com.controlcalidad.service;
 
-import java.util.List;
 import org.springframework.stereotype.Service;
 import com.controlcalidad.model.AlertaCalidad;
 import com.controlcalidad.repository.IAlertaCalidadRepository;
-import lombok.RequiredArgsConstructor;
 
+/**
+ * Implementación del servicio para AlertaCalidad.
+ * Extiende GenericServiceImpl<AlertaCalidad, Integer, IAlertaCalidadRepository>
+ * para heredar los 5 métodos CRUD genéricos.
+ *
+ * Solo necesita:
+ * 1. Inyectar su repository via constructor (RequiredArgsConstructor o manual)
+ * 2. Implementar setId() para indicar cómo asignar el ID en update()
+ */
 @Service
-@RequiredArgsConstructor
-public class AlertaCalidadService implements IAlertaCalidadService {
-	private final IAlertaCalidadRepository repo;
+public class AlertaCalidadService
+        extends GenericServiceImpl<AlertaCalidad, Integer, IAlertaCalidadRepository>
+        implements IAlertaCalidadService {
 
-	@Override
-	public AlertaCalidad save(AlertaCalidad alerta) throws Exception {
-		return repo.save(alerta);
-	}
+    public AlertaCalidadService(IAlertaCalidadRepository repository) {
+        super(repository);
+    }
 
-	@Override
-	public AlertaCalidad update(AlertaCalidad alerta, Integer id) throws Exception {
-		alerta.setIdAlerta(id);
-		return repo.save(alerta);
-	}
-
-	@Override
-	public List<AlertaCalidad> findAll() throws Exception {
-		return repo.findAll();
-	}
-
-	@Override
-	public AlertaCalidad findById(Integer id) throws Exception {
-		return repo.findById(id).orElse(new AlertaCalidad());
-	}
-
-	@Override
-	public void delete(Integer id) throws Exception {
-		repo.deleteById(id);
-	}
+    /**
+     * Indica a GenericServiceImpl cómo asignar el ID a la entidad AlertaCalidad
+     * durante la operación update().
+     */
+    @Override
+    protected void setId(AlertaCalidad entity, Integer id) {
+        entity.setIdAlerta(id);
+    }
 }

@@ -1,10 +1,10 @@
 package com.controlcalidad.dto;
-import jakarta.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 public class InspeccionDto {
-	@NotBlank(message = "La fecha y hora son obligatorias")
-	private String fechaHora;
+	@NotNull(message = "La fecha y hora son obligatorias")
+	private LocalDateTime fechaHora;
 	@Size(max = 255)
 	private String observacionesGenerales;
 	private boolean resultadoAprobado;
@@ -13,8 +13,8 @@ public class InspeccionDto {
 	private Integer idLote;
 	@NotNull(message = "El id de la materia prima es obligatorio")
 	private Integer idMateriaPrima;
-	public String getFechaHora() { return fechaHora; }
-	public void setFechaHora(String v) { this.fechaHora = v; }
+	public LocalDateTime getFechaHora() { return fechaHora; }
+	public void setFechaHora(LocalDateTime v) { this.fechaHora = v; }
 	public String getObservacionesGenerales() { return observacionesGenerales; }
 	public void setObservacionesGenerales(String v) { this.observacionesGenerales = v; }
 	public boolean isResultadoAprobado() { return resultadoAprobado; }

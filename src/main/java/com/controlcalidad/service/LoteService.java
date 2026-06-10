@@ -1,44 +1,33 @@
 package com.controlcalidad.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
-
 import com.controlcalidad.model.Lote;
 import com.controlcalidad.repository.ILoteRepository;
 
-import lombok.RequiredArgsConstructor;
-
+/**
+ * Implementación del servicio para Lote.
+ * Extiende GenericServiceImpl<Lote, Integer, ILoteRepository>
+ * para heredar los 5 métodos CRUD genéricos.
+ *
+ * Solo necesita:
+ * 1. Inyectar su repository via constructor (RequiredArgsConstructor o manual)
+ * 2. Implementar setId() para indicar cómo asignar el ID en update()
+ */
 @Service
-@RequiredArgsConstructor
-public class LoteService implements ILoteService {
-	private final ILoteRepository repo;
-	
-	@Override
-	public Lote save(Lote lote) throws Exception {
-		return repo.save(lote);
-	}
+public class LoteService
+        extends GenericServiceImpl<Lote, Integer, ILoteRepository>
+        implements ILoteService {
 
-	@Override
-	public Lote update(Lote lote, Integer id) throws Exception {
-		// TODO Logica utilizando ID
-		lote.setIdLote(id);
-		return repo.save(lote);
-	}
+    public LoteService(ILoteRepository repository) {
+        super(repository);
+    }
 
-	@Override
-	public List<Lote> findAll() throws Exception {
-		return repo.findAll();
-	}
-
-	@Override
-	public Lote findById(Integer id) throws Exception {
-		return repo.findById(id).orElse(new Lote());
-	}
-
-	@Override
-	public void delete(Integer id) throws Exception {
-		repo.deleteById(id);	
-	}
-
+    /**
+     * Indica a GenericServiceImpl cómo asignar el ID a la entidad Lote
+     * durante la operación update().
+     */
+    @Override
+    protected void setId(Lote entity, Integer id) {
+        entity.setIdLote(id);
+    }
 }

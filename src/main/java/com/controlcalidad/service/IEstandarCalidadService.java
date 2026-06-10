@@ -1,13 +1,10 @@
 package com.controlcalidad.service;
 
-import java.util.List;
-
-import com.controlcalidad.model.EstandarCalidad;
-
-public interface IEstandarCalidadService {
-	EstandarCalidad save(EstandarCalidad estandar) throws Exception;
-	EstandarCalidad update(EstandarCalidad estandar, Integer id) throws Exception;
-	List<EstandarCalidad> findAll() throws Exception;
-	EstandarCalidad findById(Integer id) throws Exception;
-	void delete(Integer id) throws Exception;
+/**
+ * Interfaz específica para EstandarCalidad.
+ * Extiende IGenericService<EstandarCalidad, Integer> para heredar
+ * los 5 métodos CRUD sin necesidad de redefinirlos.
+ */
+public interface IEstandarCalidadService extends IGenericService<EstandarCalidad, Integer> {
+    // Aquí se pueden agregar métodos específicos de EstandarCalidad si se necesitan
 }

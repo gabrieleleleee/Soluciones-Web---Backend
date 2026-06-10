@@ -1,44 +1,33 @@
 package com.controlcalidad.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
-
 import com.controlcalidad.model.EstandarCalidad;
 import com.controlcalidad.repository.IEstandarCalidadRepository;
 
-import lombok.RequiredArgsConstructor;
-
+/**
+ * Implementación del servicio para EstandarCalidad.
+ * Extiende GenericServiceImpl<EstandarCalidad, Integer, IEstandarCalidadRepository>
+ * para heredar los 5 métodos CRUD genéricos.
+ *
+ * Solo necesita:
+ * 1. Inyectar su repository via constructor (RequiredArgsConstructor o manual)
+ * 2. Implementar setId() para indicar cómo asignar el ID en update()
+ */
 @Service
-@RequiredArgsConstructor
-public class EstandarCalidadService implements IEstandarCalidadService {
-	private final IEstandarCalidadRepository repo;
-	
-	@Override
-	public EstandarCalidad save(EstandarCalidad estandar) throws Exception {
-		return repo.save(estandar);
-	}
+public class EstandarCalidadService
+        extends GenericServiceImpl<EstandarCalidad, Integer, IEstandarCalidadRepository>
+        implements IEstandarCalidadService {
 
-	@Override
-	public EstandarCalidad update(EstandarCalidad estandar, Integer id) throws Exception {
-		// TODO Logica utilizando ID
-		estandar.setIdEstandar(id);
-		return repo.save(estandar);
-	}
+    public EstandarCalidadService(IEstandarCalidadRepository repository) {
+        super(repository);
+    }
 
-	@Override
-	public List<EstandarCalidad> findAll() throws Exception {
-		return repo.findAll();
-	}
-
-	@Override
-	public EstandarCalidad findById(Integer id) throws Exception {
-		return repo.findById(id).orElse(new EstandarCalidad());
-	}
-
-	@Override
-	public void delete(Integer id) throws Exception {
-		repo.deleteById(id);	
-	}
-
+    /**
+     * Indica a GenericServiceImpl cómo asignar el ID a la entidad EstandarCalidad
+     * durante la operación update().
+     */
+    @Override
+    protected void setId(EstandarCalidad entity, Integer id) {
+        entity.setIdEstandar(id);
+    }
 }

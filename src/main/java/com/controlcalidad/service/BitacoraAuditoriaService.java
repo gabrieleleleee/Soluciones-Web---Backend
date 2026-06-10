@@ -1,39 +1,33 @@
 package com.controlcalidad.service;
 
-import java.util.List;
 import org.springframework.stereotype.Service;
 import com.controlcalidad.model.BitacoraAuditoria;
 import com.controlcalidad.repository.IBitacoraAuditoriaRepository;
-import lombok.RequiredArgsConstructor;
 
+/**
+ * Implementación del servicio para BitacoraAuditoria.
+ * Extiende GenericServiceImpl<BitacoraAuditoria, Integer, IBitacoraAuditoriaRepository>
+ * para heredar los 5 métodos CRUD genéricos.
+ *
+ * Solo necesita:
+ * 1. Inyectar su repository via constructor (RequiredArgsConstructor o manual)
+ * 2. Implementar setId() para indicar cómo asignar el ID en update()
+ */
 @Service
-@RequiredArgsConstructor
-public class BitacoraAuditoriaService implements IBitacoraAuditoriaService {
-	private final IBitacoraAuditoriaRepository repo;
+public class BitacoraAuditoriaService
+        extends GenericServiceImpl<BitacoraAuditoria, Integer, IBitacoraAuditoriaRepository>
+        implements IBitacoraAuditoriaService {
 
-	@Override
-	public BitacoraAuditoria save(BitacoraAuditoria bitacora) throws Exception {
-		return repo.save(bitacora);
-	}
+    public BitacoraAuditoriaService(IBitacoraAuditoriaRepository repository) {
+        super(repository);
+    }
 
-	@Override
-	public BitacoraAuditoria update(BitacoraAuditoria bitacora, Integer id) throws Exception {
-		bitacora.setIdBitacora(id);
-		return repo.save(bitacora);
-	}
-
-	@Override
-	public List<BitacoraAuditoria> findAll() throws Exception {
-		return repo.findAll();
-	}
-
-	@Override
-	public BitacoraAuditoria findById(Integer id) throws Exception {
-		return repo.findById(id).orElse(new BitacoraAuditoria());
-	}
-
-	@Override
-	public void delete(Integer id) throws Exception {
-		repo.deleteById(id);
-	}
+    /**
+     * Indica a GenericServiceImpl cómo asignar el ID a la entidad BitacoraAuditoria
+     * durante la operación update().
+     */
+    @Override
+    protected void setId(BitacoraAuditoria entity, Integer id) {
+        entity.setIdBitacora(id);
+    }
 }

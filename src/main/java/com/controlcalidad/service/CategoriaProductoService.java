@@ -1,39 +1,33 @@
 package com.controlcalidad.service;
 
-import java.util.List;
 import org.springframework.stereotype.Service;
 import com.controlcalidad.model.CategoriaProducto;
 import com.controlcalidad.repository.ICategoriaProductoRepository;
-import lombok.RequiredArgsConstructor;
 
+/**
+ * Implementación del servicio para CategoriaProducto.
+ * Extiende GenericServiceImpl<CategoriaProducto, Integer, ICategoriaProductoRepository>
+ * para heredar los 5 métodos CRUD genéricos.
+ *
+ * Solo necesita:
+ * 1. Inyectar su repository via constructor (RequiredArgsConstructor o manual)
+ * 2. Implementar setId() para indicar cómo asignar el ID en update()
+ */
 @Service
-@RequiredArgsConstructor
-public class CategoriaProductoService implements ICategoriaProductoService {
-	private final ICategoriaProductoRepository repo;
+public class CategoriaProductoService
+        extends GenericServiceImpl<CategoriaProducto, Integer, ICategoriaProductoRepository>
+        implements ICategoriaProductoService {
 
-	@Override
-	public CategoriaProducto save(CategoriaProducto categoria) throws Exception {
-		return repo.save(categoria);
-	}
+    public CategoriaProductoService(ICategoriaProductoRepository repository) {
+        super(repository);
+    }
 
-	@Override
-	public CategoriaProducto update(CategoriaProducto categoria, Integer id) throws Exception {
-		categoria.setIdCategoria(id);
-		return repo.save(categoria);
-	}
-
-	@Override
-	public List<CategoriaProducto> findAll() throws Exception {
-		return repo.findAll();
-	}
-
-	@Override
-	public CategoriaProducto findById(Integer id) throws Exception {
-		return repo.findById(id).orElse(new CategoriaProducto());
-	}
-
-	@Override
-	public void delete(Integer id) throws Exception {
-		repo.deleteById(id);
-	}
+    /**
+     * Indica a GenericServiceImpl cómo asignar el ID a la entidad CategoriaProducto
+     * durante la operación update().
+     */
+    @Override
+    protected void setId(CategoriaProducto entity, Integer id) {
+        entity.setIdCategoria(id);
+    }
 }

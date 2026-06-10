@@ -1,12 +1,10 @@
 package com.controlcalidad.service;
 
-import java.util.List;
-import com.controlcalidad.model.Defecto;
-
-public interface IDefectoService {
-	Defecto save(Defecto defecto) throws Exception;
-	Defecto update(Defecto defecto, Integer id) throws Exception;
-	List<Defecto> findAll() throws Exception;
-	Defecto findById(Integer id) throws Exception;
-	void delete(Integer id) throws Exception;
+/**
+ * Interfaz específica para Defecto.
+ * Extiende IGenericService<Defecto, Integer> para heredar
+ * los 5 métodos CRUD sin necesidad de redefinirlos.
+ */
+public interface IDefectoService extends IGenericService<Defecto, Integer> {
+    // Aquí se pueden agregar métodos específicos de Defecto si se necesitan
 }

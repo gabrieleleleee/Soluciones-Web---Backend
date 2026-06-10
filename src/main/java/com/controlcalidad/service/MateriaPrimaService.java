@@ -1,39 +1,33 @@
 package com.controlcalidad.service;
 
-import java.util.List;
 import org.springframework.stereotype.Service;
 import com.controlcalidad.model.MateriaPrima;
 import com.controlcalidad.repository.IMateriaPrimaRepository;
-import lombok.RequiredArgsConstructor;
 
+/**
+ * Implementación del servicio para MateriaPrima.
+ * Extiende GenericServiceImpl<MateriaPrima, Integer, IMateriaPrimaRepository>
+ * para heredar los 5 métodos CRUD genéricos.
+ *
+ * Solo necesita:
+ * 1. Inyectar su repository via constructor (RequiredArgsConstructor o manual)
+ * 2. Implementar setId() para indicar cómo asignar el ID en update()
+ */
 @Service
-@RequiredArgsConstructor
-public class MateriaPrimaService implements IMateriaPrimaService {
-	private final IMateriaPrimaRepository repo;
+public class MateriaPrimaService
+        extends GenericServiceImpl<MateriaPrima, Integer, IMateriaPrimaRepository>
+        implements IMateriaPrimaService {
 
-	@Override
-	public MateriaPrima save(MateriaPrima materiaPrima) throws Exception {
-		return repo.save(materiaPrima);
-	}
+    public MateriaPrimaService(IMateriaPrimaRepository repository) {
+        super(repository);
+    }
 
-	@Override
-	public MateriaPrima update(MateriaPrima materiaPrima, Integer id) throws Exception {
-		materiaPrima.setIdMateriaPrima(id);
-		return repo.save(materiaPrima);
-	}
-
-	@Override
-	public List<MateriaPrima> findAll() throws Exception {
-		return repo.findAll();
-	}
-
-	@Override
-	public MateriaPrima findById(Integer id) throws Exception {
-		return repo.findById(id).orElse(new MateriaPrima());
-	}
-
-	@Override
-	public void delete(Integer id) throws Exception {
-		repo.deleteById(id);
-	}
+    /**
+     * Indica a GenericServiceImpl cómo asignar el ID a la entidad MateriaPrima
+     * durante la operación update().
+     */
+    @Override
+    protected void setId(MateriaPrima entity, Integer id) {
+        entity.setIdMateriaPrima(id);
+    }
 }

@@ -1,12 +1,10 @@
 package com.controlcalidad.service;
 
-import java.util.List;
-import com.controlcalidad.model.DetalleInspeccion;
-
-public interface IDetalleInspeccionService {
-	DetalleInspeccion save(DetalleInspeccion detalle) throws Exception;
-	DetalleInspeccion update(DetalleInspeccion detalle, Integer id) throws Exception;
-	List<DetalleInspeccion> findAll() throws Exception;
-	DetalleInspeccion findById(Integer id) throws Exception;
-	void delete(Integer id) throws Exception;
+/**
+ * Interfaz específica para DetalleInspeccion.
+ * Extiende IGenericService<DetalleInspeccion, Integer> para heredar
+ * los 5 métodos CRUD sin necesidad de redefinirlos.
+ */
+public interface IDetalleInspeccionService extends IGenericService<DetalleInspeccion, Integer> {
+    // Aquí se pueden agregar métodos específicos de DetalleInspeccion si se necesitan
 }

@@ -1,4 +1,5 @@
 package com.controlcalidad.dto;
+import java.time.LocalDateTime;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 public class BitacoraAuditoriaDto {
@@ -8,6 +9,7 @@ public class BitacoraAuditoriaDto {
 	private String tabla;
 	@NotBlank(message = "El usuario responsable es obligatorio") @Size(max = 150)
 	private String usuarioResponsable;
+	private LocalDateTime fechaHora;
 	@Size(max = 255)
 	private String descripcion;
 	public String getAccion() { return accion; }
@@ -16,6 +18,8 @@ public class BitacoraAuditoriaDto {
 	public void setTabla(String v) { this.tabla = v; }
 	public String getUsuarioResponsable() { return usuarioResponsable; }
 	public void setUsuarioResponsable(String v) { this.usuarioResponsable = v; }
+	public LocalDateTime getFechaHora() { return fechaHora; }
+	public void setFechaHora(LocalDateTime v) { this.fechaHora = v; }
 	public String getDescripcion() { return descripcion; }
 	public void setDescripcion(String v) { this.descripcion = v; }
 }

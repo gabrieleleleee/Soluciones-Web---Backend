@@ -1,39 +1,33 @@
 package com.controlcalidad.service;
 
-import java.util.List;
 import org.springframework.stereotype.Service;
 import com.controlcalidad.model.Proveedor;
 import com.controlcalidad.repository.IProveedorRepository;
-import lombok.RequiredArgsConstructor;
 
+/**
+ * Implementación del servicio para Proveedor.
+ * Extiende GenericServiceImpl<Proveedor, Integer, IProveedorRepository>
+ * para heredar los 5 métodos CRUD genéricos.
+ *
+ * Solo necesita:
+ * 1. Inyectar su repository via constructor (RequiredArgsConstructor o manual)
+ * 2. Implementar setId() para indicar cómo asignar el ID en update()
+ */
 @Service
-@RequiredArgsConstructor
-public class ProveedorService implements IProveedorService {
-	private final IProveedorRepository repo;
+public class ProveedorService
+        extends GenericServiceImpl<Proveedor, Integer, IProveedorRepository>
+        implements IProveedorService {
 
-	@Override
-	public Proveedor save(Proveedor proveedor) throws Exception {
-		return repo.save(proveedor);
-	}
+    public ProveedorService(IProveedorRepository repository) {
+        super(repository);
+    }
 
-	@Override
-	public Proveedor update(Proveedor proveedor, Integer id) throws Exception {
-		proveedor.setIdProveedor(id);
-		return repo.save(proveedor);
-	}
-
-	@Override
-	public List<Proveedor> findAll() throws Exception {
-		return repo.findAll();
-	}
-
-	@Override
-	public Proveedor findById(Integer id) throws Exception {
-		return repo.findById(id).orElse(new Proveedor());
-	}
-
-	@Override
-	public void delete(Integer id) throws Exception {
-		repo.deleteById(id);
-	}
+    /**
+     * Indica a GenericServiceImpl cómo asignar el ID a la entidad Proveedor
+     * durante la operación update().
+     */
+    @Override
+    protected void setId(Proveedor entity, Integer id) {
+        entity.setIdProveedor(id);
+    }
 }

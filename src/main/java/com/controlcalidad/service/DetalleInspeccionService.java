@@ -1,56 +1,33 @@
 package com.controlcalidad.service;
 
-import java.util.List;
 import org.springframework.stereotype.Service;
 import com.controlcalidad.model.DetalleInspeccion;
-import com.controlcalidad.model.EstandarCalidad;
 import com.controlcalidad.repository.IDetalleInspeccionRepository;
-import com.controlcalidad.repository.IEstandarCalidadRepository;
-import lombok.RequiredArgsConstructor;
 
+/**
+ * Implementación del servicio para DetalleInspeccion.
+ * Extiende GenericServiceImpl<DetalleInspeccion, Integer, IDetalleInspeccionRepository>
+ * para heredar los 5 métodos CRUD genéricos.
+ *
+ * Solo necesita:
+ * 1. Inyectar su repository via constructor (RequiredArgsConstructor o manual)
+ * 2. Implementar setId() para indicar cómo asignar el ID en update()
+ */
 @Service
-@RequiredArgsConstructor
-public class DetalleInspeccionService implements IDetalleInspeccionService {
+public class DetalleInspeccionService
+        extends GenericServiceImpl<DetalleInspeccion, Integer, IDetalleInspeccionRepository>
+        implements IDetalleInspeccionService {
 
-	private final IDetalleInspeccionRepository repo;
-	private final IEstandarCalidadRepository estandarRepo;
+    public DetalleInspeccionService(IDetalleInspeccionRepository repository) {
+        super(repository);
+    }
 
-	@Override
-	public DetalleInspeccion save(DetalleInspeccion detalle) throws Exception {
-		// LÓGICA DE NEGOCIO: calcularCumplimiento / validarMedicion
-		// 1. Buscamos el estándar de calidad completo en la base de datos
-		EstandarCalidad estandar = estandarRepo.findById(detalle.getEstandarCalidad().getIdEstandar())
-				.orElseThrow(() -> new Exception("Estándar de calidad no encontrado"));
-
-		// 2. Evaluamos si el valor medido está dentro del rango permitido
-		double valor = detalle.getValorMedido();
-		boolean cumple = (valor >= estandar.getValorMinimo() && valor <= estandar.getValorMaximo());
-
-		// 3. Asignamos el resultado del cálculo al atributo antes de guardar
-		detalle.setCumpleEstandar(cumple);
-		detalle.setEstandarCalidad(estandar);
-
-		return repo.save(detalle);
-	}
-
-	@Override
-	public DetalleInspeccion update(DetalleInspeccion detalle, Integer id) throws Exception {
-		detalle.setIdDetalle(id);
-		return repo.save(detalle);
-	}
-
-	@Override
-	public List<DetalleInspeccion> findAll() throws Exception {
-		return repo.findAll();
-	}
-
-	@Override
-	public DetalleInspeccion findById(Integer id) throws Exception {
-		return repo.findById(id).orElse(new DetalleInspeccion());
-	}
-
-	@Override
-	public void delete(Integer id) throws Exception {
-		repo.deleteById(id);
-	}
+    /**
+     * Indica a GenericServiceImpl cómo asignar el ID a la entidad DetalleInspeccion
+     * durante la operación update().
+     */
+    @Override
+    protected void setId(DetalleInspeccion entity, Integer id) {
+        entity.setIdDetalle(id);
+    }
 }

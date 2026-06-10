@@ -1,12 +1,10 @@
 package com.controlcalidad.service;
 
-import java.util.List;
-import com.controlcalidad.model.AreaProduccion;
-
-public interface IAreaProduccionService {
-	AreaProduccion save(AreaProduccion areaProduccion) throws Exception;
-	AreaProduccion update(AreaProduccion areaProduccion, Integer id) throws Exception;
-	List<AreaProduccion> findAll() throws Exception;
-	AreaProduccion findById(Integer id) throws Exception;
-	void delete(Integer id) throws Exception;
+/**
+ * Interfaz específica para AreaProduccion.
+ * Extiende IGenericService<AreaProduccion, Integer> para heredar
+ * los 5 métodos CRUD sin necesidad de redefinirlos.
+ */
+public interface IAreaProduccionService extends IGenericService<AreaProduccion, Integer> {
+    // Aquí se pueden agregar métodos específicos de AreaProduccion si se necesitan
 }

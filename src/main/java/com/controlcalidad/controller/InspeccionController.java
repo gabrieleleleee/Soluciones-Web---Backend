@@ -1,29 +1,18 @@
 package com.controlcalidad.controller;
 
 import java.util.List;
-
 import org.springframework.hateoas.EntityModel;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import com.controlcalidad.dto.InspeccionDto;
 import com.controlcalidad.model.Inspeccion;
-import java.time.LocalDateTime;
 import com.controlcalidad.model.Lote;
-import com.controlcalidad.model.MateriaPrima;
 import com.controlcalidad.repository.ILoteRepository;
+import com.controlcalidad.model.MateriaPrima;
 import com.controlcalidad.repository.IMateriaPrimaRepository;
 import com.controlcalidad.service.IInspeccionService;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -52,7 +41,7 @@ public class InspeccionController {
 	@PostMapping
 	public ResponseEntity<Inspeccion> save(@Valid @RequestBody InspeccionDto dto) throws Exception {
 		Inspeccion inspeccion = new Inspeccion();
-		inspeccion.setFechaHora(java.time.LocalDateTime.parse(dto.getFechaHora()));
+		inspeccion.setFechaHora(dto.getFechaHora());
 		inspeccion.setObservacionesGenerales(dto.getObservacionesGenerales());
 		inspeccion.setResultadoAprobado(dto.isResultadoAprobado());
 		inspeccion.setEstado(dto.isEstado());
@@ -66,7 +55,7 @@ public class InspeccionController {
 	public ResponseEntity<Inspeccion> update(@Valid @RequestBody InspeccionDto dto,
 			@PathVariable("id") Integer id) throws Exception {
 		Inspeccion inspeccion = new Inspeccion();
-		inspeccion.setFechaHora(java.time.LocalDateTime.parse(dto.getFechaHora()));
+		inspeccion.setFechaHora(dto.getFechaHora());
 		inspeccion.setObservacionesGenerales(dto.getObservacionesGenerales());
 		inspeccion.setResultadoAprobado(dto.isResultadoAprobado());
 		inspeccion.setEstado(dto.isEstado());

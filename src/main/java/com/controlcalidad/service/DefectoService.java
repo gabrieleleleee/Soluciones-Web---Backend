@@ -1,39 +1,33 @@
 package com.controlcalidad.service;
 
-import java.util.List;
 import org.springframework.stereotype.Service;
 import com.controlcalidad.model.Defecto;
 import com.controlcalidad.repository.IDefectoRepository;
-import lombok.RequiredArgsConstructor;
 
+/**
+ * Implementación del servicio para Defecto.
+ * Extiende GenericServiceImpl<Defecto, Integer, IDefectoRepository>
+ * para heredar los 5 métodos CRUD genéricos.
+ *
+ * Solo necesita:
+ * 1. Inyectar su repository via constructor (RequiredArgsConstructor o manual)
+ * 2. Implementar setId() para indicar cómo asignar el ID en update()
+ */
 @Service
-@RequiredArgsConstructor
-public class DefectoService implements IDefectoService {
-	private final IDefectoRepository repo;
+public class DefectoService
+        extends GenericServiceImpl<Defecto, Integer, IDefectoRepository>
+        implements IDefectoService {
 
-	@Override
-	public Defecto save(Defecto defecto) throws Exception {
-		return repo.save(defecto);
-	}
+    public DefectoService(IDefectoRepository repository) {
+        super(repository);
+    }
 
-	@Override
-	public Defecto update(Defecto defecto, Integer id) throws Exception {
-		defecto.setIdDefecto(id);
-		return repo.save(defecto);
-	}
-
-	@Override
-	public List<Defecto> findAll() throws Exception {
-		return repo.findAll();
-	}
-
-	@Override
-	public Defecto findById(Integer id) throws Exception {
-		return repo.findById(id).orElse(new Defecto());
-	}
-
-	@Override
-	public void delete(Integer id) throws Exception {
-		repo.deleteById(id);
-	}
+    /**
+     * Indica a GenericServiceImpl cómo asignar el ID a la entidad Defecto
+     * durante la operación update().
+     */
+    @Override
+    protected void setId(Defecto entity, Integer id) {
+        entity.setIdDefecto(id);
+    }
 }

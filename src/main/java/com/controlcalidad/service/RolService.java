@@ -1,44 +1,33 @@
 package com.controlcalidad.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
-
 import com.controlcalidad.model.Rol;
 import com.controlcalidad.repository.IRolRepository;
 
-import lombok.RequiredArgsConstructor;
-
+/**
+ * Implementación del servicio para Rol.
+ * Extiende GenericServiceImpl<Rol, Integer, IRolRepository>
+ * para heredar los 5 métodos CRUD genéricos.
+ *
+ * Solo necesita:
+ * 1. Inyectar su repository via constructor (RequiredArgsConstructor o manual)
+ * 2. Implementar setId() para indicar cómo asignar el ID en update()
+ */
 @Service
-@RequiredArgsConstructor
-public class RolService implements IRolService {
-	private final IRolRepository repo;
-	
-	@Override
-	public Rol save(Rol rol) throws Exception {
-		return repo.save(rol);
-	}
+public class RolService
+        extends GenericServiceImpl<Rol, Integer, IRolRepository>
+        implements IRolService {
 
-	@Override
-	public Rol update(Rol rol, Integer id) throws Exception {
-		// TODO Logica utilizando ID
-		rol.setIdRol(id);
-		return repo.save(rol);
-	}
+    public RolService(IRolRepository repository) {
+        super(repository);
+    }
 
-	@Override
-	public List<Rol> findAll() throws Exception {
-		return repo.findAll();
-	}
-
-	@Override
-	public Rol findById(Integer id) throws Exception {
-		return repo.findById(id).orElse(new Rol());
-	}
-
-	@Override
-	public void delete(Integer id) throws Exception {
-		repo.deleteById(id);	
-	}
-
+    /**
+     * Indica a GenericServiceImpl cómo asignar el ID a la entidad Rol
+     * durante la operación update().
+     */
+    @Override
+    protected void setId(Rol entity, Integer id) {
+        entity.setIdRol(id);
+    }
 }

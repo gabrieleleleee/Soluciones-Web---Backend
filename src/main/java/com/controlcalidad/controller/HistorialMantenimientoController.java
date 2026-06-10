@@ -1,27 +1,16 @@
 package com.controlcalidad.controller;
 
 import java.util.List;
-
 import org.springframework.hateoas.EntityModel;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import com.controlcalidad.dto.HistorialMantenimientoDto;
 import com.controlcalidad.model.HistorialMantenimiento;
-import java.time.LocalDateTime;
 import com.controlcalidad.model.MaquinariaEquipo;
 import com.controlcalidad.repository.IMaquinariaEquipoRepository;
 import com.controlcalidad.service.IHistorialMantenimientoService;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -49,7 +38,7 @@ public class HistorialMantenimientoController {
 	@PostMapping
 	public ResponseEntity<HistorialMantenimiento> save(@Valid @RequestBody HistorialMantenimientoDto dto) throws Exception {
 		HistorialMantenimiento historial = new HistorialMantenimiento();
-		historial.setFechaMantenimiento(java.time.LocalDateTime.parse(dto.getFechaMantenimiento()));
+		historial.setFechaMantenimiento(dto.getFechaMantenimiento());
 		historial.setTipoMantenimiento(dto.getTipoMantenimiento());
 		historial.setDescripcionActividad(dto.getDescripcionActividad());
 		historial.setTecnicoResponsable(dto.getTecnicoResponsable());
@@ -64,7 +53,7 @@ public class HistorialMantenimientoController {
 	public ResponseEntity<HistorialMantenimiento> update(@Valid @RequestBody HistorialMantenimientoDto dto,
 			@PathVariable("id") Integer id) throws Exception {
 		HistorialMantenimiento historial = new HistorialMantenimiento();
-		historial.setFechaMantenimiento(java.time.LocalDateTime.parse(dto.getFechaMantenimiento()));
+		historial.setFechaMantenimiento(dto.getFechaMantenimiento());
 		historial.setTipoMantenimiento(dto.getTipoMantenimiento());
 		historial.setDescripcionActividad(dto.getDescripcionActividad());
 		historial.setTecnicoResponsable(dto.getTecnicoResponsable());

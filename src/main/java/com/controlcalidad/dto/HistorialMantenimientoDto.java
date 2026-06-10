@@ -1,4 +1,5 @@
 package com.controlcalidad.dto;
+import java.time.LocalDateTime;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -6,8 +7,8 @@ import jakarta.validation.constraints.Size;
 public class HistorialMantenimientoDto {
 	@NotNull(message = "El id del equipo es obligatorio")
 	private Integer idEquipo;
-	@NotBlank(message = "La fecha es obligatoria")
-	private String fechaMantenimiento;
+	@NotNull(message = "La fecha es obligatoria")
+	private LocalDateTime fechaMantenimiento;
 	@NotBlank(message = "El tipo de mantenimiento es obligatorio") @Size(max = 50)
 	private String tipoMantenimiento;
 	@NotBlank(message = "La descripcion es obligatoria")
@@ -19,8 +20,8 @@ public class HistorialMantenimientoDto {
 	private boolean estado;
 	public Integer getIdEquipo() { return idEquipo; }
 	public void setIdEquipo(Integer v) { this.idEquipo = v; }
-	public String getFechaMantenimiento() { return fechaMantenimiento; }
-	public void setFechaMantenimiento(String v) { this.fechaMantenimiento = v; }
+	public LocalDateTime getFechaMantenimiento() { return fechaMantenimiento; }
+	public void setFechaMantenimiento(LocalDateTime v) { this.fechaMantenimiento = v; }
 	public String getTipoMantenimiento() { return tipoMantenimiento; }
 	public void setTipoMantenimiento(String v) { this.tipoMantenimiento = v; }
 	public String getDescripcionActividad() { return descripcionActividad; }

@@ -1,39 +1,33 @@
 package com.controlcalidad.service;
 
-import java.util.List;
 import org.springframework.stereotype.Service;
 import com.controlcalidad.model.MaquinariaEquipo;
 import com.controlcalidad.repository.IMaquinariaEquipoRepository;
-import lombok.RequiredArgsConstructor;
 
+/**
+ * Implementación del servicio para MaquinariaEquipo.
+ * Extiende GenericServiceImpl<MaquinariaEquipo, Integer, IMaquinariaEquipoRepository>
+ * para heredar los 5 métodos CRUD genéricos.
+ *
+ * Solo necesita:
+ * 1. Inyectar su repository via constructor (RequiredArgsConstructor o manual)
+ * 2. Implementar setId() para indicar cómo asignar el ID en update()
+ */
 @Service
-@RequiredArgsConstructor
-public class MaquinariaEquipoService implements IMaquinariaEquipoService {
-	private final IMaquinariaEquipoRepository repo;
+public class MaquinariaEquipoService
+        extends GenericServiceImpl<MaquinariaEquipo, Integer, IMaquinariaEquipoRepository>
+        implements IMaquinariaEquipoService {
 
-	@Override
-	public MaquinariaEquipo save(MaquinariaEquipo maquinaria) throws Exception {
-		return repo.save(maquinaria);
-	}
+    public MaquinariaEquipoService(IMaquinariaEquipoRepository repository) {
+        super(repository);
+    }
 
-	@Override
-	public MaquinariaEquipo update(MaquinariaEquipo maquinaria, Integer id) throws Exception {
-		maquinaria.setIdEquipo(id);
-		return repo.save(maquinaria);
-	}
-
-	@Override
-	public List<MaquinariaEquipo> findAll() throws Exception {
-		return repo.findAll();
-	}
-
-	@Override
-	public MaquinariaEquipo findById(Integer id) throws Exception {
-		return repo.findById(id).orElse(new MaquinariaEquipo());
-	}
-
-	@Override
-	public void delete(Integer id) throws Exception {
-		repo.deleteById(id);
-	}
+    /**
+     * Indica a GenericServiceImpl cómo asignar el ID a la entidad MaquinariaEquipo
+     * durante la operación update().
+     */
+    @Override
+    protected void setId(MaquinariaEquipo entity, Integer id) {
+        entity.setIdEquipo(id);
+    }
 }
