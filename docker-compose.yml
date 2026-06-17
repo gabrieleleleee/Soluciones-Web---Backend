@@ -1,0 +1,41 @@
+services:
+
+  db:
+    image: mysql:8.4
+    container_name: controlcalidad-db
+    environment:
+      MYSQL_DATABASE: controlcalidaddb
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./Soluciones-Web---Backend
+    container_name: controlcalidad-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/controlcalidaddb?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+    ports:
+      - "9090:9090"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./travelapp---frontend---soluciones-web-/controlcalidad-frontend
+    container_name: controlcalidad-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
