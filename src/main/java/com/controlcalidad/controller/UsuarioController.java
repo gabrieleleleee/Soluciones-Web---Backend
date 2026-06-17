@@ -78,7 +78,7 @@ public class UsuarioController {
 
 		if (dto.getIdsRoles() != null) {
 			java.util.List<com.controlcalidad.model.Rol> roles = dto.getIdsRoles().stream()
-				.map(id -> { com.controlcalidad.model.Rol r = new com.controlcalidad.model.Rol(); r.setIdRol(id); r.setEstado(true); return r; })
+				.map(rolId -> { com.controlcalidad.model.Rol r = new com.controlcalidad.model.Rol(); r.setIdRol(rolId); r.setEstado(true); return r; })
 				.toList();
 			usuario.setRoles(roles);
 		}

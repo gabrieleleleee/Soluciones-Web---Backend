@@ -1,10 +1,12 @@
 package com.controlcalidad.service;
 
-/**
- * Interfaz específica para Inspeccion.
- * Extiende IGenericService<Inspeccion, Integer> para heredar
- * los 5 métodos CRUD sin necesidad de redefinirlos.
- */
-public interface IInspeccionService extends IGenericService<Inspeccion, Integer> {
-    // Aquí se pueden agregar métodos específicos de Inspeccion si se necesitan
+import com.controlcalidad.model.Inspeccion;
+import java.util.List;
+
+public interface IInspeccionService {
+    Inspeccion save(Inspeccion entity) throws Exception;
+    Inspeccion update(Inspeccion entity, Integer id) throws Exception;
+    List<Inspeccion> findAll() throws Exception;
+    Inspeccion findById(Integer id) throws Exception;
+    void delete(Integer id) throws Exception;
 }

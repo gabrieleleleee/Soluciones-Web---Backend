@@ -1,10 +1,12 @@
 package com.controlcalidad.service;
 
-/**
- * Interfaz específica para BitacoraAuditoria.
- * Extiende IGenericService<BitacoraAuditoria, Integer> para heredar
- * los 5 métodos CRUD sin necesidad de redefinirlos.
- */
-public interface IBitacoraAuditoriaService extends IGenericService<BitacoraAuditoria, Integer> {
-    // Aquí se pueden agregar métodos específicos de BitacoraAuditoria si se necesitan
+import com.controlcalidad.model.BitacoraAuditoria;
+import java.util.List;
+
+public interface IBitacoraAuditoriaService {
+    BitacoraAuditoria save(BitacoraAuditoria entity) throws Exception;
+    BitacoraAuditoria update(BitacoraAuditoria entity, Integer id) throws Exception;
+    List<BitacoraAuditoria> findAll() throws Exception;
+    BitacoraAuditoria findById(Integer id) throws Exception;
+    void delete(Integer id) throws Exception;
 }

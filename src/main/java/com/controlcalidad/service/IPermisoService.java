@@ -1,10 +1,12 @@
 package com.controlcalidad.service;
 
-/**
- * Interfaz específica para Permiso.
- * Extiende IGenericService<Permiso, Integer> para heredar
- * los 5 métodos CRUD sin necesidad de redefinirlos.
- */
-public interface IPermisoService extends IGenericService<Permiso, Integer> {
-    // Aquí se pueden agregar métodos específicos de Permiso si se necesitan
+import com.controlcalidad.model.Permiso;
+import java.util.List;
+
+public interface IPermisoService {
+    Permiso save(Permiso entity) throws Exception;
+    Permiso update(Permiso entity, Integer id) throws Exception;
+    List<Permiso> findAll() throws Exception;
+    Permiso findById(Integer id) throws Exception;
+    void delete(Integer id) throws Exception;
 }

@@ -1,10 +1,12 @@
 package com.controlcalidad.service;
 
-/**
- * Interfaz específica para Producto.
- * Extiende IGenericService<Producto, Integer> para heredar
- * los 5 métodos CRUD sin necesidad de redefinirlos.
- */
-public interface IProductoService extends IGenericService<Producto, Integer> {
-    // Aquí se pueden agregar métodos específicos de Producto si se necesitan
+import com.controlcalidad.model.Producto;
+import java.util.List;
+
+public interface IProductoService {
+    Producto save(Producto entity) throws Exception;
+    Producto update(Producto entity, Integer id) throws Exception;
+    List<Producto> findAll() throws Exception;
+    Producto findById(Integer id) throws Exception;
+    void delete(Integer id) throws Exception;
 }

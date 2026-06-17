@@ -1,10 +1,12 @@
 package com.controlcalidad.service;
 
-/**
- * Interfaz específica para AlertaCalidad.
- * Extiende IGenericService<AlertaCalidad, Integer> para heredar
- * los 5 métodos CRUD sin necesidad de redefinirlos.
- */
-public interface IAlertaCalidadService extends IGenericService<AlertaCalidad, Integer> {
-    // Aquí se pueden agregar métodos específicos de AlertaCalidad si se necesitan
+import com.controlcalidad.model.AlertaCalidad;
+import java.util.List;
+
+public interface IAlertaCalidadService {
+    AlertaCalidad save(AlertaCalidad entity) throws Exception;
+    AlertaCalidad update(AlertaCalidad entity, Integer id) throws Exception;
+    List<AlertaCalidad> findAll() throws Exception;
+    AlertaCalidad findById(Integer id) throws Exception;
+    void delete(Integer id) throws Exception;
 }

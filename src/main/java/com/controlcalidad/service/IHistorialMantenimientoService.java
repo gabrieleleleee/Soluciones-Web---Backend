@@ -1,10 +1,12 @@
 package com.controlcalidad.service;
 
-/**
- * Interfaz específica para HistorialMantenimiento.
- * Extiende IGenericService<HistorialMantenimiento, Integer> para heredar
- * los 5 métodos CRUD sin necesidad de redefinirlos.
- */
-public interface IHistorialMantenimientoService extends IGenericService<HistorialMantenimiento, Integer> {
-    // Aquí se pueden agregar métodos específicos de HistorialMantenimiento si se necesitan
+import com.controlcalidad.model.HistorialMantenimiento;
+import java.util.List;
+
+public interface IHistorialMantenimientoService {
+    HistorialMantenimiento save(HistorialMantenimiento entity) throws Exception;
+    HistorialMantenimiento update(HistorialMantenimiento entity, Integer id) throws Exception;
+    List<HistorialMantenimiento> findAll() throws Exception;
+    HistorialMantenimiento findById(Integer id) throws Exception;
+    void delete(Integer id) throws Exception;
 }

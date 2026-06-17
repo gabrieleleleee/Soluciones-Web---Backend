@@ -1,10 +1,12 @@
 package com.controlcalidad.service;
 
-/**
- * Interfaz específica para UnidadMedida.
- * Extiende IGenericService<UnidadMedida, Integer> para heredar
- * los 5 métodos CRUD sin necesidad de redefinirlos.
- */
-public interface IUnidadMedidaService extends IGenericService<UnidadMedida, Integer> {
-    // Aquí se pueden agregar métodos específicos de UnidadMedida si se necesitan
+import com.controlcalidad.model.UnidadMedida;
+import java.util.List;
+
+public interface IUnidadMedidaService {
+    UnidadMedida save(UnidadMedida entity) throws Exception;
+    UnidadMedida update(UnidadMedida entity, Integer id) throws Exception;
+    List<UnidadMedida> findAll() throws Exception;
+    UnidadMedida findById(Integer id) throws Exception;
+    void delete(Integer id) throws Exception;
 }
