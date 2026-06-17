@@ -14,7 +14,7 @@
 	<name>controlcalidad-backend</name>
 	<description>Sistema de Control de Calidad Artesanal</description>
 	<properties>
-		<java.version>25</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<!-- Web MVC -->
