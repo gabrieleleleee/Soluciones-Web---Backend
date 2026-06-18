@@ -1,0 +1,5 @@
+El sistema implementa operaciones CRUD, las cuales permiten la gestión básica de datos en la aplicación. CRUD corresponde a Create (Crear), Read (Leer), Update (Actualizar) y Delete (Eliminar).
+
+En el proyecto, estas operaciones se utilizan para administrar la información de los registros de cuyes. Permiten agregar nuevos datos, consultar la información almacenada, actualizar registros existentes y eliminar aquellos que ya no son necesarios.
+
+La implementación del CRUD asegura una correcta organización y manejo de la información dentro del sistema, facilitando su uso y mantenimiento.
