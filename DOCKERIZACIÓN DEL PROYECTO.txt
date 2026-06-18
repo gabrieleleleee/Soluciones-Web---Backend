@@ -1,0 +1,3 @@
+La dockerización es el proceso de empaquetar una aplicación y todas sus dependencias dentro de un contenedor Docker. Esto permite que el sistema se ejecute de manera uniforme en distintos entornos, facilitando su despliegue, mantenimiento y distribución.
+
+En el presente proyecto se utiliza Docker para garantizar la portabilidad de la aplicación y reducir problemas de compatibilidad entre diferentes equipos y servidores.
