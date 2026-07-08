@@ -32,6 +32,11 @@ public class DetalleInspeccionController {
 		return ResponseEntity.ok(service.findAll());
 	}
 
+	@GetMapping("/pageable")
+	public ResponseEntity<Page<DetalleInspeccion>> findAllPageable(@PageableDefault(size = 10, direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
+		return ResponseEntity.ok(service.findAll(pageable));
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<EntityModel<DetalleInspeccion>> findById(@PathVariable("id") Integer id) throws Exception {
 		DetalleInspeccion detalle = service.findById(id);
@@ -39,11 +44,6 @@ public class DetalleInspeccionController {
 			linkTo(methodOn(DetalleInspeccionController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(DetalleInspeccionController.class).findAll()).withRel("detalles-inspeccion"));
 		return ResponseEntity.ok(model);
-	}
-
-	@GetMapping("/pageable")
-	public ResponseEntity<Page<DetalleInspeccion>> findAllPageable(@PageableDefault(size = 10, sort = "id", direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
-		return ResponseEntity.ok(service.findAll(pageable));
 	}
 
 	@PostMapping

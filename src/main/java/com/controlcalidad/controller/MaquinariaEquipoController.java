@@ -29,6 +29,11 @@ public class MaquinariaEquipoController {
 		return ResponseEntity.ok(service.findAll());
 	}
 
+	@GetMapping("/pageable")
+	public ResponseEntity<Page<MaquinariaEquipo>> findAllPageable(@PageableDefault(size = 10, direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
+		return ResponseEntity.ok(service.findAll(pageable));
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<EntityModel<MaquinariaEquipo>> findById(@PathVariable("id") Integer id) throws Exception {
 		MaquinariaEquipo maquinaria = service.findById(id);
@@ -36,11 +41,6 @@ public class MaquinariaEquipoController {
 			linkTo(methodOn(MaquinariaEquipoController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(MaquinariaEquipoController.class).findAll()).withRel("maquinarias"));
 		return ResponseEntity.ok(model);
-	}
-
-	@GetMapping("/pageable")
-	public ResponseEntity<Page<MaquinariaEquipo>> findAllPageable(@PageableDefault(size = 10, sort = "id", direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
-		return ResponseEntity.ok(service.findAll(pageable));
 	}
 
 	@PostMapping

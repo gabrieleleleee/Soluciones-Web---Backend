@@ -29,6 +29,11 @@ public class AccionCorrectivaController {
 		return ResponseEntity.ok(service.findAll());
 	}
 
+	@GetMapping("/pageable")
+	public ResponseEntity<Page<AccionCorrectiva>> findAllPageable(@PageableDefault(size = 10, direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
+		return ResponseEntity.ok(service.findAll(pageable));
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<EntityModel<AccionCorrectiva>> findById(@PathVariable("id") Integer id) throws Exception {
 		AccionCorrectiva accion = service.findById(id);
@@ -36,11 +41,6 @@ public class AccionCorrectivaController {
 			linkTo(methodOn(AccionCorrectivaController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(AccionCorrectivaController.class).findAll()).withRel("acciones-correctivas"));
 		return ResponseEntity.ok(model);
-	}
-
-	@GetMapping("/pageable")
-	public ResponseEntity<Page<AccionCorrectiva>> findAllPageable(@PageableDefault(size = 10, sort = "id", direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
-		return ResponseEntity.ok(service.findAll(pageable));
 	}
 
 	@PostMapping

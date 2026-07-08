@@ -38,6 +38,11 @@ public class ProveedorController {
 		return ResponseEntity.ok(service.findAll());
 	}
 
+	@GetMapping("/pageable")
+	public ResponseEntity<Page<Proveedor>> findAllPageable(@PageableDefault(size = 10, direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
+		return ResponseEntity.ok(service.findAll(pageable));
+	}
+
 	// GET BY ID - HATEOAS Nivel 3: incluye links de navegacion
 	@GetMapping("/{id}")
 	public ResponseEntity<EntityModel<Proveedor>> findById(@PathVariable("id") Integer id) throws Exception {
@@ -47,11 +52,6 @@ public class ProveedorController {
 			linkTo(methodOn(ProveedorController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(ProveedorController.class).findAll()).withRel("proveedores"));
 		return ResponseEntity.ok(model);
-	}
-
-	@GetMapping("/pageable")
-	public ResponseEntity<Page<Proveedor>> findAllPageable(@PageableDefault(size = 10, sort = "id", direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
-		return ResponseEntity.ok(service.findAll(pageable));
 	}
 
 	// POST - DTO con validacion (@Valid)

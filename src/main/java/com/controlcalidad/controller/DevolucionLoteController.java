@@ -29,6 +29,11 @@ public class DevolucionLoteController {
 		return ResponseEntity.ok(service.findAll());
 	}
 
+	@GetMapping("/pageable")
+	public ResponseEntity<Page<DevolucionLote>> findAllPageable(@PageableDefault(size = 10, direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
+		return ResponseEntity.ok(service.findAll(pageable));
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<EntityModel<DevolucionLote>> findById(@PathVariable("id") Integer id) throws Exception {
 		DevolucionLote devolucion = service.findById(id);
@@ -36,11 +41,6 @@ public class DevolucionLoteController {
 			linkTo(methodOn(DevolucionLoteController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(DevolucionLoteController.class).findAll()).withRel("devoluciones"));
 		return ResponseEntity.ok(model);
-	}
-
-	@GetMapping("/pageable")
-	public ResponseEntity<Page<DevolucionLote>> findAllPageable(@PageableDefault(size = 10, sort = "id", direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
-		return ResponseEntity.ok(service.findAll(pageable));
 	}
 
 	@PostMapping

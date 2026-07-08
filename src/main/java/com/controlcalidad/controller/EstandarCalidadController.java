@@ -29,6 +29,11 @@ public class EstandarCalidadController {
 		return ResponseEntity.ok(service.findAll());
 	}
 
+	@GetMapping("/pageable")
+	public ResponseEntity<Page<EstandarCalidad>> findAllPageable(@PageableDefault(size = 10, direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
+		return ResponseEntity.ok(service.findAll(pageable));
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<EntityModel<EstandarCalidad>> findById(@PathVariable("id") Integer id) throws Exception {
 		EstandarCalidad estandar = service.findById(id);
@@ -36,11 +41,6 @@ public class EstandarCalidadController {
 			linkTo(methodOn(EstandarCalidadController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(EstandarCalidadController.class).findAll()).withRel("estandares"));
 		return ResponseEntity.ok(model);
-	}
-
-	@GetMapping("/pageable")
-	public ResponseEntity<Page<EstandarCalidad>> findAllPageable(@PageableDefault(size = 10, sort = "id", direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
-		return ResponseEntity.ok(service.findAll(pageable));
 	}
 
 	@PostMapping

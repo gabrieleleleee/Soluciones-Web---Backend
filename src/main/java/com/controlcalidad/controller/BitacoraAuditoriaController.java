@@ -26,6 +26,11 @@ public class BitacoraAuditoriaController {
 		return ResponseEntity.ok(service.findAll());
 	}
 
+	@GetMapping("/pageable")
+	public ResponseEntity<Page<BitacoraAuditoria>> findAllPageable(@PageableDefault(size = 10, direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
+		return ResponseEntity.ok(service.findAll(pageable));
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<EntityModel<BitacoraAuditoria>> findById(@PathVariable("id") Integer id) throws Exception {
 		BitacoraAuditoria bitacora = service.findById(id);
@@ -33,11 +38,6 @@ public class BitacoraAuditoriaController {
 			linkTo(methodOn(BitacoraAuditoriaController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(BitacoraAuditoriaController.class).findAll()).withRel("bitacora-auditoria"));
 		return ResponseEntity.ok(model);
-	}
-
-	@GetMapping("/pageable")
-	public ResponseEntity<Page<BitacoraAuditoria>> findAllPageable(@PageableDefault(size = 10, sort = "id", direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
-		return ResponseEntity.ok(service.findAll(pageable));
 	}
 
 	@PostMapping

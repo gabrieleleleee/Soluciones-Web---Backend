@@ -26,6 +26,11 @@ public class DefectoController {
 		return ResponseEntity.ok(service.findAll());
 	}
 
+	@GetMapping("/pageable")
+	public ResponseEntity<Page<Defecto>> findAllPageable(@PageableDefault(size = 10, direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
+		return ResponseEntity.ok(service.findAll(pageable));
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<EntityModel<Defecto>> findById(@PathVariable("id") Integer id) throws Exception {
 		Defecto defecto = service.findById(id);
@@ -33,11 +38,6 @@ public class DefectoController {
 			linkTo(methodOn(DefectoController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(DefectoController.class).findAll()).withRel("defectos"));
 		return ResponseEntity.ok(model);
-	}
-
-	@GetMapping("/pageable")
-	public ResponseEntity<Page<Defecto>> findAllPageable(@PageableDefault(size = 10, sort = "id", direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
-		return ResponseEntity.ok(service.findAll(pageable));
 	}
 
 	@PostMapping

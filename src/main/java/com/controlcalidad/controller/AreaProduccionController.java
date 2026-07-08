@@ -38,6 +38,11 @@ public class AreaProduccionController {
 		return ResponseEntity.ok(service.findAll());
 	}
 
+	@GetMapping("/pageable")
+	public ResponseEntity<Page<AreaProduccion>> findAllPageable(@PageableDefault(size = 10, direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
+		return ResponseEntity.ok(service.findAll(pageable));
+	}
+
 	// GET BY ID - HATEOAS Nivel 3: incluye links de navegacion
 	@GetMapping("/{id}")
 	public ResponseEntity<EntityModel<AreaProduccion>> findById(@PathVariable("id") Integer id) throws Exception {
@@ -47,11 +52,6 @@ public class AreaProduccionController {
 			linkTo(methodOn(AreaProduccionController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(AreaProduccionController.class).findAll()).withRel("areas-produccion"));
 		return ResponseEntity.ok(model);
-	}
-
-	@GetMapping("/pageable")
-	public ResponseEntity<Page<AreaProduccion>> findAllPageable(@PageableDefault(size = 10, sort = "id", direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
-		return ResponseEntity.ok(service.findAll(pageable));
 	}
 
 	// POST - DTO con validacion (@Valid)

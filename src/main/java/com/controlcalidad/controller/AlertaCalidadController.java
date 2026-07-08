@@ -26,6 +26,11 @@ public class AlertaCalidadController {
 		return ResponseEntity.ok(service.findAll());
 	}
 
+	@GetMapping("/pageable")
+	public ResponseEntity<Page<AlertaCalidad>> findAllPageable(@PageableDefault(size = 10, direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
+		return ResponseEntity.ok(service.findAll(pageable));
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<EntityModel<AlertaCalidad>> findById(@PathVariable("id") Integer id) throws Exception {
 		AlertaCalidad alerta = service.findById(id);
@@ -33,11 +38,6 @@ public class AlertaCalidadController {
 			linkTo(methodOn(AlertaCalidadController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(AlertaCalidadController.class).findAll()).withRel("alertas"));
 		return ResponseEntity.ok(model);
-	}
-
-	@GetMapping("/pageable")
-	public ResponseEntity<Page<AlertaCalidad>> findAllPageable(@PageableDefault(size = 10, sort = "id", direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
-		return ResponseEntity.ok(service.findAll(pageable));
 	}
 
 	@PostMapping

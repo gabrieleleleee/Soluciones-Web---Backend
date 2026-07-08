@@ -29,6 +29,11 @@ public class HistorialMantenimientoController {
 		return ResponseEntity.ok(service.findAll());
 	}
 
+	@GetMapping("/pageable")
+	public ResponseEntity<Page<HistorialMantenimiento>> findAllPageable(@PageableDefault(size = 10, direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
+		return ResponseEntity.ok(service.findAll(pageable));
+	}
+
 	@GetMapping("/{id}")
 	public ResponseEntity<EntityModel<HistorialMantenimiento>> findById(@PathVariable("id") Integer id) throws Exception {
 		HistorialMantenimiento historial = service.findById(id);
@@ -36,11 +41,6 @@ public class HistorialMantenimientoController {
 			linkTo(methodOn(HistorialMantenimientoController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(HistorialMantenimientoController.class).findAll()).withRel("historiales-mantenimiento"));
 		return ResponseEntity.ok(model);
-	}
-
-	@GetMapping("/pageable")
-	public ResponseEntity<Page<HistorialMantenimiento>> findAllPageable(@PageableDefault(size = 10, sort = "id", direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
-		return ResponseEntity.ok(service.findAll(pageable));
 	}
 
 	@PostMapping
