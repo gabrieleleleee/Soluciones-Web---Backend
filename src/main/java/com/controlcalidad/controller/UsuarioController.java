@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+
 import com.controlcalidad.dto.UsuarioDto;
 import com.controlcalidad.model.Usuario;
 import com.controlcalidad.service.IUsuarioService;
@@ -43,6 +47,11 @@ public class UsuarioController {
 			linkTo(methodOn(UsuarioController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(UsuarioController.class).findAll()).withRel("usuarios"));
 		return ResponseEntity.ok(model);
+	}
+
+	@GetMapping("/pageable")
+	public ResponseEntity<Page<Usuario>> findAllPageable(@PageableDefault(size = 10, sort = "id", direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
+		return ResponseEntity.ok(service.findAll(pageable));
 	}
 
 	// POST - DTO con validacion (@Valid)

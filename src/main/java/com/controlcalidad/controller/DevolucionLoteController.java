@@ -6,6 +6,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import com.controlcalidad.dto.DevolucionLoteDto;
 import com.controlcalidad.model.DevolucionLote;
 import com.controlcalidad.model.Lote;
@@ -33,6 +36,11 @@ public class DevolucionLoteController {
 			linkTo(methodOn(DevolucionLoteController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(DevolucionLoteController.class).findAll()).withRel("devoluciones"));
 		return ResponseEntity.ok(model);
+	}
+
+	@GetMapping("/pageable")
+	public ResponseEntity<Page<DevolucionLote>> findAllPageable(@PageableDefault(size = 10, sort = "id", direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
+		return ResponseEntity.ok(service.findAll(pageable));
 	}
 
 	@PostMapping

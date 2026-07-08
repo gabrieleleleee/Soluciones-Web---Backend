@@ -6,6 +6,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import com.controlcalidad.dto.DefectoDto;
 import com.controlcalidad.model.Defecto;
 import com.controlcalidad.service.IDefectoService;
@@ -30,6 +33,11 @@ public class DefectoController {
 			linkTo(methodOn(DefectoController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(DefectoController.class).findAll()).withRel("defectos"));
 		return ResponseEntity.ok(model);
+	}
+
+	@GetMapping("/pageable")
+	public ResponseEntity<Page<Defecto>> findAllPageable(@PageableDefault(size = 10, sort = "id", direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
+		return ResponseEntity.ok(service.findAll(pageable));
 	}
 
 	@PostMapping

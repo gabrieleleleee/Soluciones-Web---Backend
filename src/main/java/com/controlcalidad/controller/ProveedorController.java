@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+
 import com.controlcalidad.dto.ProveedorDto;
 import com.controlcalidad.model.Proveedor;
 import com.controlcalidad.service.IProveedorService;
@@ -43,6 +47,11 @@ public class ProveedorController {
 			linkTo(methodOn(ProveedorController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(ProveedorController.class).findAll()).withRel("proveedores"));
 		return ResponseEntity.ok(model);
+	}
+
+	@GetMapping("/pageable")
+	public ResponseEntity<Page<Proveedor>> findAllPageable(@PageableDefault(size = 10, sort = "id", direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
+		return ResponseEntity.ok(service.findAll(pageable));
 	}
 
 	// POST - DTO con validacion (@Valid)

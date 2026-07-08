@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+
 import com.controlcalidad.dto.MotivoRechazoDto;
 import com.controlcalidad.model.MotivoRechazo;
 import com.controlcalidad.service.IMotivoRechazoService;
@@ -43,6 +47,11 @@ public class MotivoRechazoController {
 			linkTo(methodOn(MotivoRechazoController.class).findById(id)).withSelfRel(),
 			linkTo(methodOn(MotivoRechazoController.class).findAll()).withRel("motivos-rechazo"));
 		return ResponseEntity.ok(model);
+	}
+
+	@GetMapping("/pageable")
+	public ResponseEntity<Page<MotivoRechazo>> findAllPageable(@PageableDefault(size = 10, sort = "id", direction = org.springframework.data.domain.Sort.Direction.ASC) Pageable pageable) throws Exception {
+		return ResponseEntity.ok(service.findAll(pageable));
 	}
 
 	// POST - DTO con validacion (@Valid)
