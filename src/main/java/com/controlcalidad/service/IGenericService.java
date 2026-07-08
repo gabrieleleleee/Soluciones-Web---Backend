@@ -2,6 +2,9 @@ package com.controlcalidad.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 /**
  * Interfaz genérica base para todos los servicios del sistema.
  * <T> = tipo de la entidad (Rol, Producto, Lote, etc.)
@@ -17,6 +20,8 @@ public interface IGenericService<T, ID> {
     T update(T entity, ID id) throws Exception;
 
     List<T> findAll() throws Exception;
+
+    Page<T> findAll(Pageable pageable) throws Exception;
 
     T findById(ID id) throws Exception;
 

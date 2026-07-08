@@ -2,6 +2,8 @@ package com.controlcalidad.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -50,6 +52,11 @@ public abstract class GenericServiceImpl<T, ID, R extends JpaRepository<T, ID>>
     @Override
     public List<T> findAll() throws Exception {
         return repository.findAll();
+    }
+
+    @Override
+    public Page<T> findAll(Pageable pageable) throws Exception {
+        return repository.findAll(pageable);
     }
 
     @Override
