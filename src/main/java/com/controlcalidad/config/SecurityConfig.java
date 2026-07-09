@@ -7,7 +7,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -23,8 +22,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 /**
  * Configuracion central de Spring Security.
  * - /auth/login es publica (no requiere token)
- * - GET: cualquier usuario autenticado (solo lectura)
- * - POST/PUT/DELETE: solo administradores (ROL_ID_1)
+ * - Cada modulo tiene rutas protegidas por autoridad MODULO_<nombre>
+ * - Administradores (ROL_ID_1 / MODULO_ADMIN) acceden a todo
  * - Sin sesion HTTP (STATELESS): cada request lleva su propio token
  * - Contrasenas encriptadas con BCrypt
  */
@@ -48,8 +47,34 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/**").permitAll()
-                .requestMatchers(HttpMethod.GET).authenticated()
-                .anyRequest().hasAuthority("ROL_ID_1")
+
+                // ADMIN: solo usuarios con rol admin
+                .requestMatchers("/roles/**", "/usuarios/**", "/permisos/**",
+                                 "/bitacora-auditoria/**", "/capacitaciones/**")
+                    .hasAnyAuthority("ROL_ID_1", "MODULO_ADMIN")
+
+                // PRODUCTOS: supervisor y admin
+                .requestMatchers("/productos/**", "/categorias/**", "/lotes/**",
+                                 "/unidades-medida/**")
+                    .hasAnyAuthority("ROL_ID_1", "MODULO_ADMIN", "MODULO_PRODUCTOS")
+
+                // CALIDAD: inspector de calidad y admin
+                .requestMatchers("/estandares/**", "/defectos/**", "/motivos-rechazo/**",
+                                 "/alertas/**")
+                    .hasAnyAuthority("ROL_ID_1", "MODULO_ADMIN", "MODULO_CALIDAD")
+
+                // INSPECCION: inspector y admin
+                .requestMatchers("/inspecciones/**", "/detalles-inspeccion/**",
+                                 "/acciones-correctivas/**", "/devoluciones/**")
+                    .hasAnyAuthority("ROL_ID_1", "MODULO_ADMIN", "MODULO_INSPECCION")
+
+                // PRODUCCION: produccion y admin
+                .requestMatchers("/materias-primas/**", "/proveedores/**",
+                                 "/areas-produccion/**", "/maquinarias/**",
+                                 "/historiales-mantenimiento/**")
+                    .hasAnyAuthority("ROL_ID_1", "MODULO_ADMIN", "MODULO_PRODUCCION")
+
+                .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

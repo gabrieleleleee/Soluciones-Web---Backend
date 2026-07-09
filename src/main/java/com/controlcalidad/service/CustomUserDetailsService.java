@@ -36,10 +36,15 @@ public class CustomUserDetailsService implements UserDetailsService {
                         "Usuario no encontrado: " + nombreUsuario));
 
         List<SimpleGrantedAuthority> authorities = usuario.getRoles().stream()
-                .flatMap(rol -> List.of(
-                    new SimpleGrantedAuthority("ROLE_" + rol.getNombre().toUpperCase().replace(" ", "_")),
-                    new SimpleGrantedAuthority("ROL_ID_" + rol.getIdRol())
-                ).stream())
+                .flatMap(rol -> {
+                    List<SimpleGrantedAuthority> auths = new ArrayList<>();
+                    auths.add(new SimpleGrantedAuthority("ROLE_" + rol.getNombre().toUpperCase().replace(" ", "_")));
+                    auths.add(new SimpleGrantedAuthority("ROL_ID_" + rol.getIdRol()));
+                    if (rol.getModulo() != null && !rol.getModulo().isBlank()) {
+                        auths.add(new SimpleGrantedAuthority("MODULO_" + rol.getModulo().toUpperCase()));
+                    }
+                    return auths.stream();
+                })
                 .collect(Collectors.toList());
 
         return new User(
