@@ -28,6 +28,9 @@ public class Rol {
 	
 	@Column(nullable = true, length = 200)
 	private String descripcion;
+
+	@Column(nullable = true, length = 50)
+	private String modulo;
 	
 	@Column(nullable = false)
 	private boolean estado;

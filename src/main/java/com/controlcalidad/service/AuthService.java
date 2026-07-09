@@ -57,7 +57,13 @@ public class AuthService {
                 .map(rol -> rol.getIdRol())
                 .collect(Collectors.toList());
 
+        List<String> modulos = usuario.getRoles().stream()
+                .map(rol -> rol.getModulo())
+                .filter(m -> m != null && !m.isBlank())
+                .distinct()
+                .collect(Collectors.toList());
+
         return new LoginResponseDto(token, usuario.getNombreUsuario(),
-                                    usuario.getNombreCompleto(), roles, idsRoles);
+                                    usuario.getNombreCompleto(), roles, idsRoles, modulos);
     }
 }

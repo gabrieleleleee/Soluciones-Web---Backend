@@ -60,6 +60,7 @@ public class RolController {
 		Rol rol = new Rol();
 		rol.setNombre(dto.getNombre());
 		rol.setDescripcion(dto.getDescripcion());
+		rol.setModulo(dto.getModulo());
 		rol.setEstado(dto.isEstado());
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(rol));
@@ -72,6 +73,7 @@ public class RolController {
 		Rol rol = new Rol();
 		rol.setNombre(dto.getNombre());
 		rol.setDescripcion(dto.getDescripcion());
+		rol.setModulo(dto.getModulo());
 		rol.setEstado(dto.isEstado());
 
 		return ResponseEntity.ok(service.update(rol, id));
